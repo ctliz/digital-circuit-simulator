@@ -33,7 +33,12 @@ Based on **Mano's Digital Design** textbook curriculum.
 
 ### Sequential Logic (Ch. 5)
 - **D Flip-Flop**: With clock input and Q/Q̄ outputs
+- **JK Flip-Flop**: J, K inputs with clock
+- **T Flip-Flop**: Toggle flip-flop with clock
+- **SR Latch**: Set-Reset latch
+- **D Latch**: Data latch with enable
 - **Register**: 4-bit register with load enable
+- **4-bit Counter**: Binary counter with reset
 - **Clock**: Oscillating signal generator (0.1-10 Hz)
 
 ### Truth Table Generator
@@ -53,6 +58,7 @@ Based on **Mano's Digital Design** textbook curriculum.
 - Properties panel for node editing
 - Signal monitoring panel
 - Interactive tutorial
+- **K-Map visualization** for Boolean simplification
 - **Multi-language support** (English/Chinese)
 
 ---
@@ -111,6 +117,7 @@ npm run preview
 4. **Delete Components**: Select and press Delete or click the delete button
 5. **Run Simulation**: Click "Run" to start simulation
 6. **Generate Truth Table**: Click the table icon at bottom-left
+7. **K-Map Visualization**: Click the grid icon for K-map simplification
 
 ### Keyboard Shortcuts
 
@@ -132,8 +139,9 @@ digital-circuit-simulator/
 │   │   ├── MonitorPanel.tsx   # Signal monitor
 │   │   ├── PropertiesPanel.tsx # Property editor
 │   │   ├── Toolbar.tsx        # Toolbar
-│   │   ├── Tutorial.tsx       # Tutorial
-│   │   └── TruthTablePanel.tsx # Truth table generator
+│   │   ├── Tutorial.tsx        # Tutorial
+│   │   ├── TruthTablePanel.tsx # Truth table generator
+│   │   └── KMapPanel.tsx      # K-map visualization
 │   ├── i18n/               # Internationalization
 │   ├── logic/              # Core logic
 │   │   ├── circuitEngine.ts    # Circuit evaluation

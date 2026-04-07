@@ -5,6 +5,7 @@ import { PropertiesPanel } from './components/PropertiesPanel';
 import { MonitorPanel } from './components/MonitorPanel';
 import { Tutorial } from './components/Tutorial';
 import { TruthTablePanel } from './components/TruthTablePanel';
+import { KMapPanel } from './components/KMapPanel';
 import { useCircuitStore } from './store/circuitStore';
 import { useI18n } from './i18n';
 import { evaluateCombinationalCircuit } from './logic/circuitEngine';
@@ -40,26 +41,102 @@ function App() {
       nodes.forEach((node) => {
         if (node.type === 'INPUT' || node.type === 'CLOCK') return;
 
-        if (node.type === 'FLIPFLOP_D') {
+        if (node.type === 'FLIPFLOP_D' || node.type === 'FLIPFLOP_JK' || node.type === 'FLIPFLOP_T') {
           const clkConn = connections.find(
             (c) => c.target === node.id && c.targetHandle === 'clk'
           );
-          const dConn = connections.find(
-            (c) => c.target === node.id && c.targetHandle === 'd'
-          );
 
-          if (clkConn && dConn) {
+          if (clkConn) {
             const clk = results.get(clkConn.source) ?? false;
-            const d = results.get(dConn.source) ?? false;
             const lastClk = node.internalState?.lastClock ?? false;
             const risingEdge = clk && !lastClk;
 
-            const newQ = risingEdge ? d : (node.internalState?.q ?? false);
-            updateNode(node.id, {
-              state: newQ,
-              internalState: { q: newQ, lastClock: clk },
-            });
+            if (node.type === 'FLIPFLOP_D') {
+              const dConn = connections.find(
+                (c) => c.target === node.id && c.targetHandle === 'd'
+              );
+              const d = dConn ? (results.get(dConn.source) ?? false) : false;
+              const newQ = risingEdge ? d : (node.internalState?.q ?? false);
+              updateNode(node.id, {
+                state: newQ,
+                internalState: { q: newQ, lastClock: clk },
+              });
+            } else if (node.type === 'FLIPFLOP_JK') {
+              const jConn = connections.find(
+                (c) => c.target === node.id && c.targetHandle === 'j'
+              );
+              const kConn = connections.find(
+                (c) => c.target === node.id && c.targetHandle === 'k'
+              );
+              const j = jConn ? (results.get(jConn.source) ?? false) : false;
+              const k = kConn ? (results.get(kConn.source) ?? false) : false;
+              const currentQ = node.internalState?.q ?? false;
+              let newQ = currentQ;
+              if (risingEdge) {
+                if (j && k) newQ = !currentQ;
+                else if (j) newQ = true;
+                else if (k) newQ = false;
+              }
+              updateNode(node.id, {
+                state: newQ,
+                internalState: { q: newQ, lastClock: clk },
+              });
+            } else if (node.type === 'FLIPFLOP_T') {
+              const tConn = connections.find(
+                (c) => c.target === node.id && c.targetHandle === 't'
+              );
+              const t = tConn ? (results.get(tConn.source) ?? false) : false;
+              const currentQ = node.internalState?.q ?? false;
+              const newQ = risingEdge && t ? !currentQ : currentQ;
+              updateNode(node.id, {
+                state: newQ,
+                internalState: { q: newQ, lastClock: clk },
+              });
+            }
           }
+        } else if (node.type === 'LATCH_SR') {
+          const sConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 's'
+          );
+          const rConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'r'
+          );
+          const s = sConn ? (results.get(sConn.source) ?? false) : false;
+          const r = rConn ? (results.get(rConn.source) ?? false) : false;
+          const currentQ = node.internalState?.q ?? false;
+          let newQ = currentQ;
+          if (s && r) newQ = false;
+          else if (s) newQ = true;
+          else if (r) newQ = false;
+          updateNode(node.id, { state: newQ, internalState: { q: newQ } });
+        } else if (node.type === 'LATCH_D') {
+          const dConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'd'
+          );
+          const enConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'en'
+          );
+          const d = dConn ? (results.get(dConn.source) ?? false) : false;
+          const en = enConn ? (results.get(enConn.source) ?? false) : false;
+          const currentQ = node.internalState?.q ?? false;
+          const newQ = en ? d : currentQ;
+          updateNode(node.id, { state: newQ, internalState: { q: newQ } });
+        } else if (node.type === 'COUNTER_4BIT') {
+          const clkConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'clk'
+          );
+          const resetConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'reset'
+          );
+          const clk = clkConn ? (results.get(clkConn.source) ?? false) : false;
+          const reset = resetConn ? (results.get(resetConn.source) ?? false) : false;
+          const lastClk = node.internalState?.lastClock ?? false;
+          const risingEdge = clk && !lastClk;
+          const currentCount = node.internalState?.count ?? 0;
+          const newCount = reset ? 0 : (risingEdge ? (currentCount + 1) % 16 : currentCount);
+          updateNode(node.id, {
+            internalState: { count: newCount, lastClock: clk },
+          });
         } else if (node.type === 'REGISTER') {
           const loadConn = connections.find(
             (c) => c.target === node.id && c.targetHandle === 'load'
@@ -115,6 +192,7 @@ function App() {
       </div>
       <Tutorial />
       <TruthTablePanel />
+      <KMapPanel />
     </div>
   );
 }

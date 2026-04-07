@@ -10,6 +10,7 @@
     "running": "运行中",
     "stopped": "已停止",
     "basicComponents": "基础门",
+    "sequential": "时序逻辑",
     "arithmetic": "算术运算",
     "muxDemux": "多路复用器",
     "codec": "编码器/译码器"
@@ -25,8 +26,13 @@
     "XOR": "异或门",
     "XNOR": "同或门",
     "FLIPFLOP_D": "D触发器",
+    "FLIPFLOP_JK": "JK触发器",
+    "FLIPFLOP_T": "T触发器",
+    "LATCH_SR": "SR锁存器",
+    "LATCH_D": "D锁存器",
     "CLOCK": "时钟",
     "REGISTER": "寄存器",
+    "COUNTER_4BIT": "4位计数器",
     "HALF_ADDER": "半加器",
     "FULL_ADDER": "全加器",
     "MUX_2_1": "2选1多路复用器",
@@ -93,5 +99,16 @@
     "generate": "生成",
     "input": "输入",
     "output": "输出"
+  },
+  "kmap": {
+    "title": "卡诺图",
+    "generate": "生成",
+    "variables": "变量数",
+    "vars": "变量",
+    "inputs": "输入",
+    "outputs": "输出",
+    "hint": "点击单元格切换值，用于卡诺图化简",
+    "high": "高电平 (1)",
+    "low": "低电平 (0)"
   }
 }

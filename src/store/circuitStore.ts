@@ -39,17 +39,34 @@ export const useCircuitStore = create<CircuitStore>((set) => ({
 
   addNode: (type, position) => {
     const id = generateId(type.toLowerCase());
+    let internalState;
+    
+    switch (type) {
+      case 'FLIPFLOP_D':
+      case 'FLIPFLOP_JK':
+      case 'FLIPFLOP_T':
+        internalState = { q: false, lastClock: false };
+        break;
+      case 'REGISTER':
+        internalState = { values: [false, false, false, false] };
+        break;
+      case 'COUNTER_4BIT':
+        internalState = { count: 0 };
+        break;
+      case 'LATCH_SR':
+      case 'LATCH_D':
+        internalState = { q: false };
+        break;
+      default:
+        internalState = undefined;
+    }
+    
     const node: CircuitNode = {
       id,
       type,
       position,
       state: type === 'INPUT' || type === 'CLOCK' ? false : undefined,
-      internalState:
-        type === 'FLIPFLOP_D'
-          ? { q: false, lastClock: false }
-          : type === 'REGISTER'
-          ? { values: [false, false, false, false] }
-          : undefined,
+      internalState,
     };
     set((state) => ({ nodes: [...state.nodes, node] }));
   },

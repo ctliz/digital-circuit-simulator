@@ -179,6 +179,42 @@ export const gateDefinitions: Record<NodeType, GateDefinition> = {
     },
     outputCount: 2,
   },
+  LATCH_SR: {
+    type: 'LATCH_SR',
+    name: 'SR Latch',
+    inputCount: 2,
+    symbol: 'SR',
+    evaluate: () => false,
+  },
+  LATCH_D: {
+    type: 'LATCH_D',
+    name: 'D Latch',
+    inputCount: 2,
+    symbol: 'D-L',
+    evaluate: () => false,
+  },
+  FLIPFLOP_JK: {
+    type: 'FLIPFLOP_JK',
+    name: 'JK Flip-Flop',
+    inputCount: 3,
+    symbol: 'JK-FF',
+    evaluate: () => false,
+  },
+  FLIPFLOP_T: {
+    type: 'FLIPFLOP_T',
+    name: 'T Flip-Flop',
+    inputCount: 2,
+    symbol: 'T-FF',
+    evaluate: () => false,
+  },
+  COUNTER_4BIT: {
+    type: 'COUNTER_4BIT',
+    name: '4-bit Counter',
+    inputCount: 2,
+    symbol: 'CNT',
+    evaluate: () => false,
+    outputCount: 4,
+  },
 };
 
 export function getHalfAdderOutputs(inputs: boolean[]): { sum: boolean; carry: boolean } {
@@ -238,4 +274,64 @@ export function getEncoder4_2Outputs(inputs: boolean[]): { y0: boolean; y1: bool
   if (d1) return { y0: true, y1: false };
   if (d0) return { y0: false, y1: false };
   return { y0: false, y1: false };
+}
+
+export const sequentialGateDefinitions: Record<string, { name: string; symbol: string }> = {
+  LATCH_SR: { name: 'SR Latch', symbol: 'SR' },
+  LATCH_D: { name: 'D Latch', symbol: 'D-L' },
+  FLIPFLOP_JK: { name: 'JK Flip-Flop', symbol: 'JK-FF' },
+  FLIPFLOP_T: { name: 'T Flip-Flop', symbol: 'T-FF' },
+  COUNTER_4BIT: { name: '4-bit Counter', symbol: 'CNT' },
+};
+
+export function getSRLatchOutputs(s: boolean, r: boolean, currentQ: boolean): { q: boolean; qNot: boolean } {
+  if (s && r) {
+    return { q: false, qNot: false };
+  }
+  if (s) {
+    return { q: true, qNot: false };
+  }
+  if (r) {
+    return { q: false, qNot: true };
+  }
+  return { q: currentQ, qNot: !currentQ };
+}
+
+export function getDLatchOutput(d: boolean, enable: boolean, currentQ: boolean): { q: boolean; qNot: boolean } {
+  if (enable) {
+    return { q: d, qNot: !d };
+  }
+  return { q: currentQ, qNot: !currentQ };
+}
+
+export function getJKFlipFlopOutputs(j: boolean, k: boolean, clk: boolean, currentQ: boolean, lastClk: boolean): { q: boolean; qNot: boolean } {
+  const risingEdge = clk && !lastClk;
+  if (risingEdge) {
+    if (j && k) {
+      return { q: !currentQ, qNot: currentQ };
+    }
+    if (j) {
+      return { q: true, qNot: false };
+    }
+    if (k) {
+      return { q: false, qNot: true };
+    }
+  }
+  return { q: currentQ, qNot: !currentQ };
+}
+
+export function getTFlipFlopOutput(t: boolean, clk: boolean, currentQ: boolean, lastClk: boolean): { q: boolean; qNot: boolean } {
+  const risingEdge = clk && !lastClk;
+  if (risingEdge && t) {
+    return { q: !currentQ, qNot: currentQ };
+  }
+  return { q: currentQ, qNot: !currentQ };
+}
+
+export function getCounter4BitOutput(clk: boolean, lastClk: boolean, currentCount: number): number {
+  const risingEdge = clk && !lastClk;
+  if (risingEdge) {
+    return (currentCount + 1) % 16;
+  }
+  return currentCount;
 }

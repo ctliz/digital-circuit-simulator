@@ -17,6 +17,7 @@ import {
   GitBranch,
   Layers,
   Share2,
+  FlipHorizontal,
 } from 'lucide-react';
 
 const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -29,9 +30,17 @@ const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[]
   { type: 'NOR', icon: <ChevronRight size={18} />, labelKey: 'gates.NOR' },
   { type: 'XOR', icon: <ChevronRight size={18} />, labelKey: 'gates.XOR' },
   { type: 'XNOR', icon: <ChevronRight size={18} />, labelKey: 'gates.XNOR' },
-  { type: 'FLIPFLOP_D', icon: <HardDrive size={18} />, labelKey: 'gates.FLIPFLOP_D' },
   { type: 'CLOCK', icon: <Clock size={18} />, labelKey: 'gates.CLOCK' },
+];
+
+const sequentialButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'FLIPFLOP_D', icon: <HardDrive size={18} />, labelKey: 'gates.FLIPFLOP_D' },
+  { type: 'FLIPFLOP_JK', icon: <FlipHorizontal size={18} />, labelKey: 'gates.FLIPFLOP_JK' },
+  { type: 'FLIPFLOP_T', icon: <FlipHorizontal size={18} />, labelKey: 'gates.FLIPFLOP_T' },
+  { type: 'LATCH_SR', icon: <FlipHorizontal size={18} />, labelKey: 'gates.LATCH_SR' },
+  { type: 'LATCH_D', icon: <FlipHorizontal size={18} />, labelKey: 'gates.LATCH_D' },
   { type: 'REGISTER', icon: <HardDrive size={18} />, labelKey: 'gates.REGISTER' },
+  { type: 'COUNTER_4BIT', icon: <HardDrive size={18} />, labelKey: 'gates.COUNTER_4BIT' },
 ];
 
 const arithmeticButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -74,6 +83,25 @@ export function Toolbar() {
         <div className="toolbar-label">{t('toolbar.basicComponents')}</div>
         <div className="toolbar-buttons">
           {toolButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.sequential')}</div>
+        <div className="toolbar-buttons">
+          {sequentialButtons.map(({ type, icon, labelKey }) => (
             <button
               key={type}
               className="toolbar-btn"

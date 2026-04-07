@@ -9,8 +9,13 @@ export type NodeType =
   | 'XOR'
   | 'XNOR'
   | 'FLIPFLOP_D'
+  | 'FLIPFLOP_JK'
+  | 'FLIPFLOP_T'
+  | 'LATCH_SR'
+  | 'LATCH_D'
   | 'CLOCK'
   | 'REGISTER'
+  | 'COUNTER_4BIT'
   | 'HALF_ADDER'
   | 'FULL_ADDER'
   | 'MUX_2_1'
@@ -30,6 +35,12 @@ export interface CircuitNode {
     q?: boolean;
     lastClock?: boolean;
     values?: boolean[];
+    count?: number;
+    lastJ?: boolean;
+    lastK?: boolean;
+    lastT?: boolean;
+    s?: boolean;
+    r?: boolean;
   };
 }
 

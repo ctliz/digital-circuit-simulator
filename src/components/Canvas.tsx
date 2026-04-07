@@ -283,6 +283,94 @@ function Encoder4_2Node({ data }: { data: { y0?: boolean; y1?: boolean } }) {
   );
 }
 
+function SRLatchNode({ data }: { data: { q?: boolean } }) {
+  const { t } = useI18n();
+  return (
+    <div className="node latch-node">
+      <Handle type="target" position={Position.Left} id="s" style={{ top: '30%' }} />
+      <Handle type="target" position={Position.Left} id="r" style={{ top: '70%' }} />
+      <Handle type="source" position={Position.Right} id="q" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="qNot" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.LATCH_SR')}</div>
+      <div className="compound-outputs">
+        <span>Q: {data.q ? '1' : '0'}</span>
+      </div>
+    </div>
+  );
+}
+
+function DLatchNode({ data }: { data: { q?: boolean } }) {
+  const { t } = useI18n();
+  return (
+    <div className="node latch-node">
+      <Handle type="target" position={Position.Left} id="d" style={{ top: '35%' }} />
+      <Handle type="target" position={Position.Left} id="en" style={{ top: '65%' }} />
+      <Handle type="source" position={Position.Right} id="q" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="qNot" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.LATCH_D')}</div>
+      <div className="compound-outputs">
+        <span>Q: {data.q ? '1' : '0'}</span>
+      </div>
+    </div>
+  );
+}
+
+function JKFlipFlopNode({ data }: { data: { q?: boolean } }) {
+  const { t } = useI18n();
+  return (
+    <div className="node flipflop-node">
+      <Handle type="target" position={Position.Left} id="j" style={{ top: '25%' }} />
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '50%' }} />
+      <Handle type="target" position={Position.Left} id="k" style={{ top: '75%' }} />
+      <Handle type="source" position={Position.Right} id="q" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="qNot" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.FLIPFLOP_JK')}</div>
+      <div className="compound-outputs">
+        <span>Q: {data.q ? '1' : '0'}</span>
+      </div>
+    </div>
+  );
+}
+
+function TFlipFlopNode({ data }: { data: { q?: boolean } }) {
+  const { t } = useI18n();
+  return (
+    <div className="node flipflop-node">
+      <Handle type="target" position={Position.Left} id="t" style={{ top: '35%' }} />
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '65%' }} />
+      <Handle type="source" position={Position.Right} id="q" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="qNot" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.FLIPFLOP_T')}</div>
+      <div className="compound-outputs">
+        <span>Q: {data.q ? '1' : '0'}</span>
+      </div>
+    </div>
+  );
+}
+
+function Counter4BitNode({ data }: { data: { count?: number } }) {
+  const { t } = useI18n();
+  const count = data.count ?? 0;
+  const bits = [(count >> 0) & 1, (count >> 1) & 1, (count >> 2) & 1, (count >> 3) & 1];
+  return (
+    <div className="node counter-node">
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '40%' }} />
+      <Handle type="target" position={Position.Left} id="reset" style={{ top: '70%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '20%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '50%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.COUNTER_4BIT')}</div>
+      <div className="counter-display">{count.toString(2).padStart(4, '0')}</div>
+      <div className="counter-bits">
+        {bits.map((b, i) => (
+          <span key={i} className={b ? 'high' : 'low'}>{b}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const nodeTypes: NodeTypes = {
   INPUT: InputNode,
   OUTPUT: OutputNode,
@@ -295,7 +383,12 @@ const nodeTypes: NodeTypes = {
   XNOR: GateNode,
   CLOCK: ClockNode,
   FLIPFLOP_D: FlipFlopNode,
+  FLIPFLOP_JK: JKFlipFlopNode,
+  FLIPFLOP_T: TFlipFlopNode,
+  LATCH_SR: SRLatchNode,
+  LATCH_D: DLatchNode,
   REGISTER: RegisterNode,
+  COUNTER_4BIT: Counter4BitNode,
   HALF_ADDER: HalfAdderNode,
   FULL_ADDER: FullAdderNode,
   MUX_2_1: Mux2_1Node,

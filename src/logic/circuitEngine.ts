@@ -285,8 +285,18 @@ export function getNodeInputHandles(type: NodeType): string[] {
       return ['in'];
     case 'FLIPFLOP_D':
       return ['d', 'clk'];
+    case 'FLIPFLOP_JK':
+      return ['j', 'k', 'clk'];
+    case 'FLIPFLOP_T':
+      return ['t', 'clk'];
+    case 'LATCH_SR':
+      return ['s', 'r'];
+    case 'LATCH_D':
+      return ['d', 'en'];
     case 'REGISTER':
       return ['d0', 'd1', 'd2', 'd3', 'load'];
+    case 'COUNTER_4BIT':
+      return ['clk', 'reset'];
     case 'HALF_ADDER':
       return ['a', 'b'];
     case 'FULL_ADDER':
@@ -311,8 +321,15 @@ export function getNodeInputHandles(type: NodeType): string[] {
 export function getNodeOutputHandles(type: NodeType): string[] {
   switch (type) {
     case 'FLIPFLOP_D':
+    case 'FLIPFLOP_JK':
+    case 'FLIPFLOP_T':
+      return ['q', 'qNot'];
+    case 'LATCH_SR':
+    case 'LATCH_D':
       return ['q', 'qNot'];
     case 'REGISTER':
+      return ['q0', 'q1', 'q2', 'q3'];
+    case 'COUNTER_4BIT':
       return ['q0', 'q1', 'q2', 'q3'];
     case 'HALF_ADDER':
       return ['sum', 'carry'];

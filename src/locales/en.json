@@ -10,6 +10,7 @@
     "running": "Running",
     "stopped": "Stopped",
     "basicComponents": "Basic Gates",
+    "sequential": "Sequential",
     "arithmetic": "Arithmetic",
     "muxDemux": "MUX/DEMUX",
     "codec": "Encoder/Decoder"
@@ -25,8 +26,13 @@
     "XOR": "XOR",
     "XNOR": "XNOR",
     "FLIPFLOP_D": "D Flip-Flop",
+    "FLIPFLOP_JK": "JK Flip-Flop",
+    "FLIPFLOP_T": "T Flip-Flop",
+    "LATCH_SR": "SR Latch",
+    "LATCH_D": "D Latch",
     "CLOCK": "Clock",
     "REGISTER": "Register",
+    "COUNTER_4BIT": "4-bit Counter",
     "HALF_ADDER": "Half Adder",
     "FULL_ADDER": "Full Adder",
     "MUX_2_1": "2-1 MUX",
@@ -93,5 +99,16 @@
     "generate": "Generate",
     "input": "Input",
     "output": "Output"
+  },
+  "kmap": {
+    "title": "K-Map",
+    "generate": "Generate",
+    "variables": "Variables",
+    "vars": "vars",
+    "inputs": "inputs",
+    "outputs": "outputs",
+    "hint": "Click cells to toggle values for K-map simplification",
+    "high": "High (1)",
+    "low": "Low (0)"
   }
 }
