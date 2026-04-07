@@ -119,5 +119,33 @@
     "hint": "点击单元格切换值，用于卡诺图化简",
     "high": "高电平 (1)",
     "low": "低电平 (0)"
+  },
+  "waveform": {
+    "title": "波形",
+    "hint": "INPUT/CLOCK/OUTPUT 信号",
+    "empty": "运行仿真以查看波形",
+    "cycles": "t"
+  },
+  "examples": {
+    "title": "示例电路",
+    "load": "加载电路 →",
+    "andGate": "与门电路",
+    "andGateDesc": "基础2输入与门示例",
+    "halfAdder": "半加器",
+    "halfAdderDesc": "A+B → 和、进位",
+    "fullAdder": "全加器",
+    "fullAdderDesc": "A+B+Cin → 和、进位",
+    "srLatch": "SR锁存器",
+    "srLatchDesc": "置位复位锁存器，Q/Q̄输出",
+    "dFlipFlop": "D触发器",
+    "dFlipFlopDesc": "带时钟的D触发器，Q/Q̄输出",
+    "counter4bit": "4位计数器",
+    "counter4bitDesc": "带时钟和复位的二进制计数器",
+    "decoder24": "2-4译码器",
+    "decoder24Desc": "2输入4输出译码器"
+  },
+  "saveload": {
+    "save": "保存",
+    "load": "加载"
   }
 }

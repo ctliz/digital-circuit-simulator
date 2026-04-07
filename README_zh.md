@@ -73,6 +73,11 @@
 - 新手教程引导
 - **多语言支持** (英文/中文)
 
+### 实用工具
+- **波形查看器**: 实时信号波形可视化，带时间轴
+- **示例电路库**: 7个预置示例电路（与门、半加器、全加器、SR锁存器、D触发器、4位计数器、2-4译码器）
+- **电路保存/加载**: 导出电路为 JSON 文件并可重新加载
+
 ---
 
 ## 技术栈
@@ -153,7 +158,9 @@ digital-circuit-simulator/
 │   │   ├── Toolbar.tsx         # 工具栏
 │   │   ├── Tutorial.tsx        # 教程
 │   │   ├── TruthTablePanel.tsx # 真值表生成
-│   │   └── KMapPanel.tsx      # 卡诺图可视化
+│   │   ├── KMapPanel.tsx      # 卡诺图可视化
+│   │   ├── ExamplesPanel.tsx  # 示例电路库
+│   │   └── WaveformPanel.tsx   # 波形查看器
 │   ├── i18n/               # 国际化
 │   │   ├── index.tsx         # i18n 上下文
 │   │   ├── useI18n.ts        # i18n hook
@@ -164,8 +171,8 @@ digital-circuit-simulator/
 │   │   └── gateDefinitions.ts # 门定义
 │   ├── store/               # 状态管理 (Zustand)
 │   │   └── circuitStore.ts   # 电路状态存储
-│   └── types/               # TypeScript 类型
-│       └── circuit.ts        # 电路类型定义
+│   └── data/                # 示例电路数据
+│       └── examples.ts      # 预置电路示例
 ├── public/                 # 静态资源
 ├── index.html              # HTML 入口
 ├── package.json
@@ -192,10 +199,8 @@ digital-circuit-simulator/
 ## 后续规划
 
 计划中的功能：
-- [ ] 时序图可视化
-- [ ] 电路保存/加载功能
-- [ ] 示例电路库
-- [ ] 波形查看器
+- [ ] 更多示例电路
+- [ ] 电路设计命名管理
 
 ---
 

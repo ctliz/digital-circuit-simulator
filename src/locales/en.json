@@ -119,5 +119,33 @@
     "hint": "Click cells to toggle values for K-map simplification",
     "high": "High (1)",
     "low": "Low (0)"
+  },
+  "waveform": {
+    "title": "Waveform",
+    "hint": "INPUT/CLOCK/OUTPUT signals",
+    "empty": "Run simulation to see waveforms",
+    "cycles": "t"
+  },
+  "examples": {
+    "title": "Examples",
+    "load": "Load Circuit →",
+    "andGate": "AND Gate",
+    "andGateDesc": "Basic 2-input AND gate with output",
+    "halfAdder": "Half Adder",
+    "halfAdderDesc": "A+B → Sum, Carry",
+    "fullAdder": "Full Adder",
+    "fullAdderDesc": "A+B+Cin → Sum, Carry",
+    "srLatch": "SR Latch",
+    "srLatchDesc": "Set-Reset latch with Q/Q̄ outputs",
+    "dFlipFlop": "D Flip-Flop",
+    "dFlipFlopDesc": "D flip-flop with clock, Q/Q̄ outputs",
+    "counter4bit": "4-bit Counter",
+    "counter4bitDesc": "Binary counter with clock and reset",
+    "decoder24": "2-4 Decoder",
+    "decoder24Desc": "2-input, 4-output decoder"
+  },
+  "saveload": {
+    "save": "Save",
+    "load": "Load"
   }
 }

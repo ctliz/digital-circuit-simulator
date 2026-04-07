@@ -8,6 +8,7 @@ interface CircuitStore {
   clockFrequency: number;
   clockCycle: number;
   selectedNodeId: string | null;
+  signalHistory: Record<string, boolean[]>;
 
   addNode: (type: NodeType, position: { x: number; y: number }) => void;
   removeNode: (id: string) => void;
@@ -20,6 +21,11 @@ interface CircuitStore {
   incrementClockCycle: () => void;
   toggleInputState: (id: string) => void;
   clear: () => void;
+  recordSignals: (signals: Record<string, boolean>) => void;
+  clearSignalHistory: () => void;
+  exportCircuit: (name?: string) => void;
+  importCircuit: (json: string) => boolean;
+  loadExample: (nodes: CircuitNode[], connections: Omit<Connection, 'id'>[], clockFreq?: number) => void;
 }
 
 let nodeIdCounter = 0;
@@ -29,18 +35,19 @@ function generateId(prefix: string): string {
   return `${prefix}_${++nodeIdCounter}`;
 }
 
-export const useCircuitStore = create<CircuitStore>((set) => ({
+export const useCircuitStore = create<CircuitStore>((set, get) => ({
   nodes: [],
   connections: [],
   isRunning: false,
   clockFrequency: 1,
   clockCycle: 0,
   selectedNodeId: null,
+  signalHistory: {},
 
   addNode: (type, position) => {
     const id = generateId(type.toLowerCase());
     let internalState;
-    
+
     switch (type) {
       case 'FLIPFLOP_D':
       case 'FLIPFLOP_JK':
@@ -93,7 +100,7 @@ export const useCircuitStore = create<CircuitStore>((set) => ({
       default:
         internalState = undefined;
     }
-    
+
     const node: CircuitNode = {
       id,
       type,
@@ -157,5 +164,56 @@ export const useCircuitStore = create<CircuitStore>((set) => ({
       connections: [],
       selectedNodeId: null,
       clockCycle: 0,
+      signalHistory: {},
     }),
+
+  recordSignals: (signals) => set((state) => {
+    const MAX = 80;
+    const newHistory = { ...state.signalHistory };
+    Object.entries(signals).forEach(([id, val]) => {
+      const existing = newHistory[id] ?? [];
+      newHistory[id] = [...existing, val].slice(-MAX);
+    });
+    return { signalHistory: newHistory };
+  }),
+
+  clearSignalHistory: () => set({ signalHistory: {} }),
+
+  exportCircuit: (name = 'circuit') => {
+    const { nodes, connections, clockFrequency } = get();
+    const data = { version: 1, name, nodes, connections, clockFrequency };
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${name}.json`; a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  importCircuit: (json) => {
+    try {
+      const data = JSON.parse(json);
+      if (!Array.isArray(data.nodes) || !Array.isArray(data.connections)) return false;
+      set({ nodes: data.nodes, connections: data.connections, clockFrequency: data.clockFrequency ?? 1, signalHistory: {}, clockCycle: 0, isRunning: false, selectedNodeId: null });
+      return true;
+    } catch { return false; }
+  },
+
+  loadExample: (exNodes, exConns, clockFreq = 1) => {
+    // Map old IDs to new IDs
+    const idMap: Record<string, string> = {};
+    let counter = Date.now();
+    const nodes = exNodes.map(n => {
+      const newId = `${n.type.toLowerCase()}_${counter++}`;
+      idMap[n.id] = newId;
+      return { ...n, id: newId };
+    });
+    const connections = exConns.map((c, i) => ({
+      ...c,
+      id: `conn_${counter + i}`,
+      source: idMap[c.source] ?? c.source,
+      target: idMap[c.target] ?? c.target,
+    }));
+    set({ nodes, connections, clockFrequency: clockFreq, signalHistory: {}, clockCycle: 0, isRunning: false, selectedNodeId: null });
+  },
 }));

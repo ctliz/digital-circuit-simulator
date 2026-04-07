@@ -1014,3 +1014,149 @@ body {
   color: #e94560;
   letter-spacing: 1px;
 }
+
+/* Waveform Panel */
+.waveform-panel {
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+  height: 220px;
+  background: #0a1628;
+  border-top: 2px solid #1e3a5f;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.waveform-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #0d1f3c;
+  border-bottom: 1px solid #1e3a5f;
+  font-size: 12px;
+  color: #94a3b8;
+}
+.waveform-hint { color: #475569; font-size: 11px; flex: 1; }
+.waveform-content { flex: 1; overflow: hidden; }
+.waveform-scroll { overflow-x: auto; overflow-y: auto; height: 100%; }
+.waveform-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: #475569; font-size: 13px; }
+.waveform-toggle-btn {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0d1f3c;
+  border: 1px solid #1e3a5f;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 6px 16px;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 100;
+  transition: color 0.2s;
+}
+.waveform-toggle-btn:hover { color: #94a3b8; }
+
+/* Examples Panel */
+.examples-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.examples-panel {
+  background: #0d1f3c;
+  border: 1px solid #1e3a5f;
+  border-radius: 12px;
+  width: 680px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.examples-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e3a5f;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px;
+  overflow-y: auto;
+}
+.example-card {
+  background: #0a1628;
+  border: 1px solid #1e3a5f;
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.example-card:hover { border-color: #3b82f6; background: #0f2041; }
+.example-name { font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 6px; }
+.example-desc { font-size: 11px; color: #64748b; margin-bottom: 10px; line-height: 1.4; }
+.example-load { font-size: 11px; color: #3b82f6; }
+
+.examples-toggle-btn {
+  background: transparent;
+  border: 1px solid #1e3a5f;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.examples-toggle-btn:hover { color: #94a3b8; border-color: #2d4a6e; }
+
+/* Save/Load buttons */
+.save-load-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.save-btn, .load-btn {
+  background: transparent;
+  border: 1px solid #1e3a5f;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.save-btn:hover, .load-btn:hover { color: #94a3b8; border-color: #2d4a6e; }
+
+/* Close button used in panels */
+.panel-close-btn {
+  background: transparent;
+  border: none;
+  color: #475569;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.panel-close-btn:hover { color: #94a3b8; }

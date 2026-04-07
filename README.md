@@ -71,6 +71,11 @@ Based on **Mano's Digital Design** textbook curriculum.
 - Interactive tutorial for new users
 - **Multi-language support** (English/Chinese)
 
+### Tools
+- **Waveform Viewer**: Real-time signal waveform visualization with time axis
+- **Example Circuit Library**: 7 pre-built example circuits (AND gate, Half/Full Adder, SR Latch, D Flip-Flop, 4-bit Counter, 2-4 Decoder)
+- **Circuit Save/Load**: Export circuits as JSON files and reload later
+
 ---
 
 ## Tech Stack
@@ -151,7 +156,9 @@ digital-circuit-simulator/
 │   │   ├── Toolbar.tsx         # Toolbar
 │   │   ├── Tutorial.tsx        # Tutorial
 │   │   ├── TruthTablePanel.tsx # Truth table generator
-│   │   └── KMapPanel.tsx      # K-map visualization
+│   │   ├── KMapPanel.tsx      # K-map visualization
+│   │   ├── ExamplesPanel.tsx  # Example circuit library
+│   │   └── WaveformPanel.tsx   # Waveform viewer
 │   ├── i18n/               # Internationalization
 │   │   ├── index.tsx         # i18n context
 │   │   ├── useI18n.ts        # i18n hook
@@ -162,6 +169,8 @@ digital-circuit-simulator/
 │   │   └── gateDefinitions.ts # Gate definitions
 │   ├── store/                # State management (Zustand)
 │   │   └── circuitStore.ts   # Circuit store
+│   └── data/                 # Example circuits
+│       └── examples.ts       # Pre-built circuit examples
 │   └── types/                # TypeScript types
 │       └── circuit.ts        # Circuit type definitions
 ├── public/                  # Static assets
@@ -190,10 +199,8 @@ This project follows the curriculum of **Mano's Digital Design**:
 ## Roadmap
 
 Future enhancements planned:
-- [ ] Timing diagram visualization
-- [ ] Circuit save/load functionality
-- [ ] Example circuit library
-- [ ] Waveform viewer
+- [ ]更多示例电路
+- [ ] 电路设计命名管理
 
 ---
 

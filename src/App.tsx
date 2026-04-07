@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Toolbar } from './components/Toolbar';
 import { Canvas } from './components/Canvas';
 import { PropertiesPanel } from './components/PropertiesPanel';
@@ -6,9 +6,12 @@ import { MonitorPanel } from './components/MonitorPanel';
 import { Tutorial } from './components/Tutorial';
 import { TruthTablePanel } from './components/TruthTablePanel';
 import { KMapPanel } from './components/KMapPanel';
+import { WaveformPanel } from './components/WaveformPanel';
+import { ExamplesPanel } from './components/ExamplesPanel';
 import { useCircuitStore } from './store/circuitStore';
 import { useI18n } from './i18n/useI18n';
 import { evaluateCombinationalCircuit } from './logic/circuitEngine';
+import { Save, Upload } from 'lucide-react';
 
 import './App.css';
 
@@ -21,8 +24,13 @@ function App() {
     clockCycle,
     incrementClockCycle,
     clockFrequency,
+    recordSignals,
+    clearSignalHistory,
+    exportCircuit,
+    importCircuit,
   } = useCircuitStore();
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -37,6 +45,20 @@ function App() {
         });
 
       const results = evaluateCombinationalCircuit(nodes, connections);
+
+      // Record current signals for waveform viewer
+      const signalsToRecord: Record<string, boolean> = {};
+      nodes.forEach((node) => {
+        if (node.type === 'INPUT' || node.type === 'CLOCK') {
+          signalsToRecord[node.id] = node.state ?? false;
+        } else if (node.type === 'OUTPUT') {
+          const conn = connections.find((c) => c.target === node.id && c.targetHandle === 'in');
+          signalsToRecord[node.id] = conn ? (results.get(conn.source) ?? false) : false;
+        } else if (node.type === 'FLIPFLOP_D' || node.type === 'FLIPFLOP_JK' || node.type === 'FLIPFLOP_T') {
+          signalsToRecord[node.id] = node.internalState?.q ?? false;
+        }
+      });
+      recordSignals(signalsToRecord);
 
       nodes.forEach((node) => {
         if (node.type === 'INPUT' || node.type === 'CLOCK') return;
@@ -85,9 +107,9 @@ function App() {
               const tConn = connections.find(
                 (c) => c.target === node.id && c.targetHandle === 't'
               );
-              const t = tConn ? (results.get(tConn.source) ?? false) : false;
+              const tVal = tConn ? (results.get(tConn.source) ?? false) : false;
               const currentQ = node.internalState?.q ?? false;
-              const newQ = risingEdge && t ? !currentQ : currentQ;
+              const newQ = risingEdge && tVal ? !currentQ : currentQ;
               updateNode(node.id, {
                 state: newQ,
                 internalState: { q: newQ, lastClock: clk },
@@ -190,7 +212,7 @@ function App() {
           const lastClk = node.internalState?.lastClock ?? false;
           const risingEdge = clk && !lastClk;
           const currentValues = node.internalState?.values ?? [false, false, false, false];
-          
+
           let newValues: boolean[];
           if (load && risingEdge) {
             newValues = [dIn, ...currentValues.slice(0, 3)];
@@ -263,7 +285,7 @@ function App() {
           const lastClk = node.internalState?.lastClock ?? false;
           const risingEdge = clk && !lastClk;
           const currentState = node.internalState?.stateValue ?? 0;
-          
+
           let newState = currentState;
           if (risingEdge) {
             newState = (currentState + 1) % 4;
@@ -282,11 +304,48 @@ function App() {
     }, 1000 / clockFrequency);
 
     return () => clearInterval(interval);
-  }, [isRunning, clockFrequency, clockCycle, nodes, connections, updateNode, incrementClockCycle]);
+  }, [isRunning, clockFrequency, clockCycle, nodes, connections, updateNode, incrementClockCycle, recordSignals]);
+
+  // Clear signal history when simulation stops
+  useEffect(() => {
+    if (!isRunning) {
+      clearSignalHistory();
+    }
+  }, [isRunning, clearSignalHistory]);
+
+  const handleFileLoad = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      importCircuit(text);
+    };
+    reader.readAsText(file);
+    e.target.value = ''; // reset so same file can be loaded again
+  };
 
   return (
     <div className="app">
       <div className="lang-switch">
+        <div className="save-load-btns">
+          <button className="save-btn" onClick={() => exportCircuit()} title={t('saveload.save')}>
+            <Save size={14} />
+            <span>{t('saveload.save')}</span>
+          </button>
+          <label className="load-btn" title={t('saveload.load')}>
+            <Upload size={14} />
+            <span>{t('saveload.load')}</span>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              style={{ display: 'none' }}
+              onChange={handleFileLoad}
+            />
+          </label>
+          <ExamplesPanel />
+        </div>
         <button
           className={`lang-btn ${locale === 'zh' ? 'active' : ''}`}
           onClick={() => setLocale('zh')}
@@ -311,6 +370,7 @@ function App() {
       <Tutorial />
       <TruthTablePanel />
       <KMapPanel />
+      <WaveformPanel />
     </div>
   );
 }
