@@ -6,7 +6,13 @@
     "run": "运行",
     "pause": "暂停",
     "reset": "重置",
-    "nodeList": "节点列表"
+    "nodeList": "节点列表",
+    "running": "运行中",
+    "stopped": "已停止",
+    "basicComponents": "基础门",
+    "arithmetic": "算术运算",
+    "muxDemux": "多路复用器",
+    "codec": "编码器/译码器"
   },
   "gates": {
     "INPUT": "输入",
@@ -20,13 +26,23 @@
     "XNOR": "同或门",
     "FLIPFLOP_D": "D触发器",
     "CLOCK": "时钟",
-    "REGISTER": "寄存器"
+    "REGISTER": "寄存器",
+    "HALF_ADDER": "半加器",
+    "FULL_ADDER": "全加器",
+    "MUX_2_1": "2选1多路复用器",
+    "MUX_4_1": "4选1多路复用器",
+    "DEMUX_1_2": "1分2分配器",
+    "DECODER_2_4": "2-4译码器",
+    "DECODER_3_8": "3-8译码器",
+    "ENCODER_4_2": "4-2编码器"
   },
   "monitor": {
     "title": "信号监测面板",
     "hint": "点击「运行」开始仿真",
     "high": "高电平",
-    "low": "低电平"
+    "low": "低电平",
+    "cycle": "时钟周期",
+    "status": "状态"
   },
   "properties": {
     "title": "属性面板",
@@ -71,5 +87,11 @@
     "clickToAdd": "点击按钮添加节点",
     "dragToConnect": "拖拽创建连接",
     "startSimulation": "开始仿真"
+  },
+  "truthTable": {
+    "title": "真值表",
+    "generate": "生成",
+    "input": "输入",
+    "output": "输出"
   }
 }

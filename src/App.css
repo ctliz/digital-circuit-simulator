@@ -524,3 +524,205 @@ body {
   width: 24px;
   border-radius: 4px;
 }
+
+/* Truth Table Panel */
+.truth-table-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 240px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #0f3460;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.truth-table-toggle:hover {
+  background: #16213e;
+}
+
+.truth-table-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 240px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  max-width: 90vw;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.truth-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.truth-table-header h3 {
+  font-size: 16px;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.truth-table-header .close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: #e94560;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.generate-btn:hover {
+  background: #d63850;
+}
+
+.truth-table-container {
+  overflow-x: auto;
+}
+
+.truth-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+.truth-table th,
+.truth-table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.truth-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.truth-table th.output-col {
+  background: #fff0f0;
+  color: #e94560;
+}
+
+.truth-table td.high {
+  background: #fff0f0;
+  color: #e94560;
+  font-weight: bold;
+}
+
+.truth-table td.low {
+  background: #f9f9f9;
+  color: #666;
+}
+
+.truth-table .hint,
+.truth-table .no-inputs {
+  color: #888;
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+}
+
+/* Compound Nodes */
+.compound-node {
+  min-width: 90px;
+  padding: 10px;
+}
+
+.compound-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.compound-outputs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: monospace;
+  margin-top: 4px;
+}
+
+.compound-outputs span {
+  padding: 2px 6px;
+  background: #f5f5f5;
+  border-radius: 3px;
+}
+
+/* MUX Node */
+.mux-node,
+.demux-node {
+  min-width: 80px;
+}
+
+/* Decoder Node */
+.decoder-node {
+  min-width: 100px;
+}
+
+.decoder-node.wide {
+  min-width: 120px;
+}
+
+.decoder-outputs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  font-size: 10px;
+  font-family: monospace;
+}
+
+.decoder-outputs.compact {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+.decoder-outputs span {
+  padding: 2px 4px;
+  background: #f5f5f5;
+  border-radius: 2px;
+}
+
+.decoder-outputs span.high {
+  background: #fff0f0;
+  color: #e94560;
+}
+
+.decoder-outputs span.low {
+  background: #f9f9f9;
+  color: #999;
+}
+
+/* Encoder Node */
+.encoder-node {
+  min-width: 80px;
+}

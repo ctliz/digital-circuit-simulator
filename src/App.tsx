@@ -4,6 +4,7 @@ import { Canvas } from './components/Canvas';
 import { PropertiesPanel } from './components/PropertiesPanel';
 import { MonitorPanel } from './components/MonitorPanel';
 import { Tutorial } from './components/Tutorial';
+import { TruthTablePanel } from './components/TruthTablePanel';
 import { useCircuitStore } from './store/circuitStore';
 import { useI18n } from './i18n';
 import { evaluateCombinationalCircuit } from './logic/circuitEngine';
@@ -113,6 +114,7 @@ function App() {
         </div>
       </div>
       <Tutorial />
+      <TruthTablePanel />
     </div>
   );
 }

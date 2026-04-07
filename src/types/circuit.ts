@@ -10,7 +10,15 @@ export type NodeType =
   | 'XNOR'
   | 'FLIPFLOP_D'
   | 'CLOCK'
-  | 'REGISTER';
+  | 'REGISTER'
+  | 'HALF_ADDER'
+  | 'FULL_ADDER'
+  | 'MUX_2_1'
+  | 'MUX_4_1'
+  | 'DEMUX_1_2'
+  | 'DECODER_2_4'
+  | 'DECODER_3_8'
+  | 'ENCODER_4_2';
 
 export interface CircuitNode {
   id: string;

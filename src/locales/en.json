@@ -6,27 +6,43 @@
     "run": "Run",
     "pause": "Pause",
     "reset": "Reset",
-    "nodeList": "Node List"
+    "nodeList": "Node List",
+    "running": "Running",
+    "stopped": "Stopped",
+    "basicComponents": "Basic Gates",
+    "arithmetic": "Arithmetic",
+    "muxDemux": "MUX/DEMUX",
+    "codec": "Encoder/Decoder"
   },
   "gates": {
     "INPUT": "Input",
     "OUTPUT": "Output",
-    "AND": "AND Gate",
-    "OR": "OR Gate",
-    "NOT": "NOT Gate",
-    "NAND": "NAND Gate",
-    "NOR": "NOR Gate",
-    "XOR": "XOR Gate",
-    "XNOR": "XNOR Gate",
+    "AND": "AND",
+    "OR": "OR",
+    "NOT": "NOT",
+    "NAND": "NAND",
+    "NOR": "NOR",
+    "XOR": "XOR",
+    "XNOR": "XNOR",
     "FLIPFLOP_D": "D Flip-Flop",
     "CLOCK": "Clock",
-    "REGISTER": "Register"
+    "REGISTER": "Register",
+    "HALF_ADDER": "Half Adder",
+    "FULL_ADDER": "Full Adder",
+    "MUX_2_1": "2-1 MUX",
+    "MUX_4_1": "4-1 MUX",
+    "DEMUX_1_2": "1-2 DEMUX",
+    "DECODER_2_4": "2-4 Decoder",
+    "DECODER_3_8": "3-8 Decoder",
+    "ENCODER_4_2": "4-2 Encoder"
   },
   "monitor": {
     "title": "Signal Monitor",
     "hint": "Click \"Run\" to start simulation",
     "high": "High",
-    "low": "Low"
+    "low": "Low",
+    "cycle": "Clock Cycle",
+    "status": "Status"
   },
   "properties": {
     "title": "Properties",
@@ -71,5 +87,11 @@
     "clickToAdd": "Click button to add node",
     "dragToConnect": "Drag to create connection",
     "startSimulation": "Start simulation"
+  },
+  "truthTable": {
+    "title": "Truth Table",
+    "generate": "Generate",
+    "input": "Input",
+    "output": "Output"
   }
 }

@@ -13,6 +13,10 @@ import {
   CircleDot,
   Clock,
   HardDrive,
+  Plus,
+  GitBranch,
+  Layers,
+  Share2,
 } from 'lucide-react';
 
 const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -28,6 +32,23 @@ const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[]
   { type: 'FLIPFLOP_D', icon: <HardDrive size={18} />, labelKey: 'gates.FLIPFLOP_D' },
   { type: 'CLOCK', icon: <Clock size={18} />, labelKey: 'gates.CLOCK' },
   { type: 'REGISTER', icon: <HardDrive size={18} />, labelKey: 'gates.REGISTER' },
+];
+
+const arithmeticButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'HALF_ADDER', icon: <Plus size={18} />, labelKey: 'gates.HALF_ADDER' },
+  { type: 'FULL_ADDER', icon: <Plus size={18} />, labelKey: 'gates.FULL_ADDER' },
+];
+
+const muxDemuxButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'MUX_2_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_2_1' },
+  { type: 'MUX_4_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_4_1' },
+  { type: 'DEMUX_1_2', icon: <Share2 size={18} />, labelKey: 'gates.DEMUX_1_2' },
+];
+
+const codecButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'DECODER_2_4', icon: <Layers size={18} />, labelKey: 'gates.DECODER_2_4' },
+  { type: 'DECODER_3_8', icon: <Layers size={18} />, labelKey: 'gates.DECODER_3_8' },
+  { type: 'ENCODER_4_2', icon: <Layers size={18} />, labelKey: 'gates.ENCODER_4_2' },
 ];
 
 export function Toolbar() {
@@ -50,9 +71,66 @@ export function Toolbar() {
       </div>
 
       <div className="toolbar-section">
-        <div className="toolbar-label">{t('toolbar.components')}</div>
+        <div className="toolbar-label">{t('toolbar.basicComponents')}</div>
         <div className="toolbar-buttons">
           {toolButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.arithmetic')}</div>
+        <div className="toolbar-buttons">
+          {arithmeticButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.muxDemux')}</div>
+        <div className="toolbar-buttons">
+          {muxDemuxButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.codec')}</div>
+        <div className="toolbar-buttons">
+          {codecButtons.map(({ type, icon, labelKey }) => (
             <button
               key={type}
               className="toolbar-btn"

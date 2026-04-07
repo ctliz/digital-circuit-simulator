@@ -2,23 +2,43 @@
 
 An interactive web-based digital logic circuit simulator. Design, build, and simulate digital circuits using a visual node-based interface with real-time signal propagation.
 
+Based on **Mano's Digital Design** textbook curriculum.
+
 [English](./README.md) | [简体中文](./README_zh.md)
 
 ---
 
 ## Features
 
-### Logic Gates
-- **Basic Gates**: AND, OR, NOT, NAND, NOR, XOR, XNOR
+### Basic Gates
+- **AND**, **OR**, **NOT**, **NAND**, **NOR**, **XOR**, **XNOR**
 
 ### Input/Output
 - **INPUT**: Toggleable nodes with 0/1 states
 - **OUTPUT**: Display nodes for results
 
-### Sequential Logic
+### Arithmetic Circuits (Ch. 4)
+- **Half Adder**: A + B → Sum, Carry
+- **Full Adder**: A + B + Cin → Sum, Carry
+
+### Multiplexers / Demultiplexers (Ch. 4)
+- **2-1 MUX**: 2 inputs, 1 select, 1 output
+- **4-1 MUX**: 4 inputs, 2 selects, 1 output
+- **1-2 DEMUX**: 1 input, 1 select, 2 outputs
+
+### Encoders / Decoders (Ch. 4)
+- **2-4 Decoder**: 2 inputs, 4 outputs
+- **3-8 Decoder**: 3 inputs, 8 outputs
+- **4-2 Encoder**: 4 inputs, 2 outputs
+
+### Sequential Logic (Ch. 5)
 - **D Flip-Flop**: With clock input and Q/Q̄ outputs
-- **4-bit Register**: With load enable
-- **CLOCK**: Oscillating signal generator with configurable frequency (0.1-10 Hz)
+- **Register**: 4-bit register with load enable
+- **Clock**: Oscillating signal generator (0.1-10 Hz)
+
+### Truth Table Generator
+- Automatically generates truth tables for combinational circuits
+- Supports up to 8 inputs
 
 ### Simulation
 - Real-time signal propagation
@@ -32,7 +52,8 @@ An interactive web-based digital logic circuit simulator. Design, build, and sim
 - MiniMap and navigation controls
 - Properties panel for node editing
 - Signal monitoring panel
-- Interactive tutorial for new users
+- Interactive tutorial
+- **Multi-language support** (English/Chinese)
 
 ---
 
@@ -58,7 +79,7 @@ An interactive web-based digital logic circuit simulator. Design, build, and sim
 ### Install
 
 ```bash
-git clone https://github.com/yourusername/digital-circuit-simulator.git
+git clone https://github.com/ctliz/digital-circuit-simulator.git
 cd digital-circuit-simulator
 npm install
 ```
@@ -69,17 +90,12 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 to see the app.
+Open http://localhost:5173
 
 ### Build
 
 ```bash
 npm run build
-```
-
-Preview production build:
-
-```bash
 npm run preview
 ```
 
@@ -89,12 +105,12 @@ npm run preview
 
 ### Basic Operations
 
-1. **Add Components**: Click component buttons in the toolbar, then click on the canvas to place
-2. **Connect Wires**: Drag from a node's output handle to another node's input handle
+1. **Add Components**: Click component buttons in the toolbar, then click on the canvas
+2. **Connect Wires**: Drag from output handle to input handle
 3. **Edit Properties**: Click a component to view/edit properties
 4. **Delete Components**: Select and press Delete or click the delete button
 5. **Run Simulation**: Click "Run" to start simulation
-6. **Adjust Frequency**: Change clock frequency in the control panel
+6. **Generate Truth Table**: Click the table icon at bottom-left
 
 ### Keyboard Shortcuts
 
@@ -110,42 +126,35 @@ npm run preview
 
 ```
 digital-circuit-simulator/
-├── public/
-│   └── icons.svg          # Icons
 ├── src/
 │   ├── components/        # React components
-│   │   ├── Canvas.tsx         # Main canvas (ReactFlow)
-│   │   ├── MonitorPanel.tsx    # Signal monitor
+│   │   ├── Canvas.tsx         # Main canvas
+│   │   ├── MonitorPanel.tsx   # Signal monitor
 │   │   ├── PropertiesPanel.tsx # Property editor
-│   │   ├── Toolbar.tsx         # Toolbar
-│   │   └── Tutorial.tsx        # Tutorial
+│   │   ├── Toolbar.tsx        # Toolbar
+│   │   ├── Tutorial.tsx       # Tutorial
+│   │   └── TruthTablePanel.tsx # Truth table generator
 │   ├── i18n/               # Internationalization
-│   │   ├── index.tsx           # i18n context
-│   │   ├── en.json             # English translations
-│   │   └── zh.json             # Chinese translations
 │   ├── logic/              # Core logic
 │   │   ├── circuitEngine.ts    # Circuit evaluation
-│   │   └── gateDefinitions.ts  # Gate definitions
+│   │   └── gateDefinitions.ts   # Gate definitions
 │   ├── store/              # State management
-│   │   └── circuitStore.ts     # Zustand store
-│   ├── types/              # TypeScript types
-│   │   └── circuit.ts
-│   ├── App.tsx             # Root component
-│   └── main.tsx            # Entry point
-├── index.html
-├── package.json
-└── vite.config.ts
+│   └── types/              # TypeScript types
 ```
 
 ---
 
-## How It Works
+## Textbook Reference
 
-1. Click "Run" to start simulation
-2. Clock nodes toggle at the configured frequency
-3. `evaluateCombinationalCircuit()` computes all node outputs
-4. Sequential elements (Flip-Flops, Registers) update on clock edges
-5. UI reflects updated states in real-time
+This project follows the curriculum of **Mano's Digital Design**:
+
+| Chapter | Topic | Status |
+|---------|-------|--------|
+| Ch 2 | Boolean Algebra & Logic Gates | ✅ |
+| Ch 3 | Combinational Logic | ✅ |
+| Ch 4 | Combinational Functions | ✅ |
+| Ch 5 | Sequential Logic | Partial |
+| Ch 6 | Registers & Counters | Planned |
 
 ---
 

@@ -2,23 +2,45 @@
 
 一个基于 Web 的交互式数字电路模拟器，支持拖拽放置逻辑门、实时信号传播仿真、时序电路设计。
 
+参考 **Mano 数字设计** 教材大纲。
+
 [English](./README.md) | [简体中文](./README_zh.md)
 
 ---
 
-## 特性
+## 功能特性
 
-### 逻辑门
-- **基础门**: 与门(AND)、或门(OR)、非门(NOT)、与非门(NAND)、或非门(NOR)、异或门(XOR)、同或门(XNOR)
+### 基础门电路
+- **与门 (AND)**、**或门 (OR)**、**非门 (NOT)**
+- **与非门 (NAND)**、**或非门 (NOR)**
+- **异或门 (XOR)**、**同或门 (XNOR)**
 
 ### 输入输出
 - **INPUT**: 可切换 0/1 状态的输入节点
 - **OUTPUT**: 显示结果的输出节点
 
-### 时序电路
-- **D 触发器**: 带时钟输入和 Q/Q̄ 输出
-- **4位寄存器**: 带使能加载功能
-- **时钟源**: 可配置频率的振荡信号发生器 (0.1-10 Hz)
+### 算术运算电路 (第4章)
+- **半加器**: A + B → 和(Sum)、进位(Carry)
+- **全加器**: A + B + Cin → 和(Sum)、进位(Carry)
+
+### 多路复用器/分配器 (第4章)
+- **2选1多路复用器**: 2个数据输入, 1个选择, 1个输出
+- **4选1多路复用器**: 4个数据输入, 2个选择, 1个输出
+- **1分2分配器**: 1个数据输入, 1个选择, 2个输出
+
+### 编码器/译码器 (第4章)
+- **2-4译码器**: 2个输入, 4个输出
+- **3-8译码器**: 3个输入, 8个输出
+- **4-2编码器**: 4个输入, 2个输出
+
+### 时序逻辑 (第5章)
+- **D触发器**: 带时钟输入和 Q/Q̄ 输出
+- **寄存器**: 4位寄存器，带使能加载
+- **时钟源**: 可配置频率的振荡信号 (0.1-10 Hz)
+
+### 真值表生成器
+- 为组合电路自动生成真值表
+- 最多支持8个输入
 
 ### 仿真功能
 - 实时信号传播
@@ -33,6 +55,7 @@
 - 属性面板（节点编辑）
 - 信号监控面板
 - 新手教程引导
+- **多语言支持** (英文/中文)
 
 ---
 
@@ -58,7 +81,7 @@
 ### 安装
 
 ```bash
-git clone https://github.com/yourusername/digital-circuit-simulator.git
+git clone https://github.com/ctliz/digital-circuit-simulator.git
 cd digital-circuit-simulator
 npm install
 ```
@@ -69,17 +92,12 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:5173 查看运行效果。
+访问 http://localhost:5173
 
 ### 构建
 
 ```bash
 npm run build
-```
-
-预览生产构建：
-
-```bash
 npm run preview
 ```
 
@@ -93,8 +111,8 @@ npm run preview
 2. **连接组件**: 拖拽一个节点的输出连接到另一个节点的输入
 3. **编辑属性**: 点击组件查看/编辑属性
 4. **删除组件**: 选中组件后按 Delete 键或点击删除按钮
-5. **运行仿真**: 点击工具栏的"运行"按钮启动仿真
-6. **调整频率**: 在控制面板中调整时钟频率
+5. **运行仿真**: 点击"运行"按钮启动仿真
+6. **生成真值表**: 点击左下角的表格图标
 
 ### 快捷键
 
@@ -110,42 +128,35 @@ npm run preview
 
 ```
 digital-circuit-simulator/
-├── public/
-│   └── icons.svg          # 图标资源
 ├── src/
 │   ├── components/        # React 组件
-│   │   ├── Canvas.tsx         # 主画布 (ReactFlow)
-│   │   ├── MonitorPanel.tsx    # 信号监控面板
-│   │   ├── PropertiesPanel.tsx # 属性编辑面板
-│   │   ├── Toolbar.tsx         # 工具栏
-│   │   └── Tutorial.tsx        # 教程引导
+│   │   ├── Canvas.tsx         # 主画布
+│   │   ├── MonitorPanel.tsx   # 信号监控
+│   │   ├── PropertiesPanel.tsx # 属性编辑
+│   │   ├── Toolbar.tsx        # 工具栏
+│   │   ├── Tutorial.tsx       # 教程
+│   │   └── TruthTablePanel.tsx # 真值表生成
 │   ├── i18n/               # 国际化
-│   │   ├── index.tsx           # i18n 上下文
-│   │   ├── en.json             # 英文翻译
-│   │   └── zh.json             # 中文翻译
 │   ├── logic/              # 核心逻辑
-│   │   ├── circuitEngine.ts    # 电路求值引擎
+│   │   ├── circuitEngine.ts    # 电路求值
 │   │   └── gateDefinitions.ts   # 门定义
 │   ├── store/              # 状态管理
-│   │   └── circuitStore.ts     # Zustand store
-│   ├── types/              # TypeScript 类型
-│   │   └── circuit.ts
-│   ├── App.tsx             # 根组件
-│   └── main.tsx           # 入口文件
-├── index.html
-├── package.json
-└── vite.config.ts
+│   └── types/              # TypeScript 类型
 ```
 
 ---
 
-## 工作原理
+## 教材参考
 
-1. 用户点击"运行"启动仿真
-2. 时钟节点按配置频率切换状态
-3. `evaluateCombinationalCircuit()` 计算所有节点输出
-4. 时序元件（触发器、寄存器）在时钟边沿更新
-5. UI 实时反映更新后的状态
+本项目参考 **Mano 数字设计** 教材大纲：
+
+| 章节 | 内容 | 状态 |
+|------|------|------|
+| 第2章 | 布尔代数与逻辑门 | ✅ 已完成 |
+| 第3章 | 组合逻辑电路 | ✅ 已完成 |
+| 第4章 | 组合逻辑函数 | ✅ 已完成 |
+| 第5章 | 时序逻辑 | 部分完成 |
+| 第6章 | 寄存器和计数器 | 计划中 |
 
 ---
 
