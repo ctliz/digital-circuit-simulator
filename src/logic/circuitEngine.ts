@@ -258,6 +258,40 @@ export function evaluateCombinationalCircuit(
       return;
     }
 
+    if (node.type === 'MUX_8_1') {
+      const dConns = ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7'].map((h) =>
+        connections.find((c) => c.target === nodeId && c.targetHandle === h)
+      );
+      const sel0Conn = connections.find((c) => c.target === nodeId && c.targetHandle === 'sel0');
+      const sel1Conn = connections.find((c) => c.target === nodeId && c.targetHandle === 'sel1');
+      
+      const dValues = dConns.map((c) => c ? (outputValues.get(c.source) ?? false) : false);
+      const sel0 = sel0Conn ? (outputValues.get(sel0Conn.source) ?? false) : false;
+      const sel1 = sel1Conn ? (outputValues.get(sel1Conn.source) ?? false) : false;
+      const sel = (sel1 ? 2 : 0) + (sel0 ? 1 : 0);
+      
+      outputValues.set(nodeId, dValues[sel] ?? false);
+      computedNodes.add(nodeId);
+      return;
+    }
+
+    if (node.type === 'DEMUX_1_4') {
+      const dConn = connections.find((c) => c.target === nodeId && c.targetHandle === 'd');
+      const sel0Conn = connections.find((c) => c.target === nodeId && c.targetHandle === 'sel0');
+      const sel1Conn = connections.find((c) => c.target === nodeId && c.targetHandle === 'sel1');
+      
+      const d = dConn ? (outputValues.get(dConn.source) ?? false) : false;
+      const sel0 = sel0Conn ? (outputValues.get(sel0Conn.source) ?? false) : false;
+      const sel1 = sel1Conn ? (outputValues.get(sel1Conn.source) ?? false) : false;
+      const sel = (sel1 ? 2 : 0) + (sel0 ? 1 : 0);
+      
+      ['y0', 'y1', 'y2', 'y3'].forEach((y, i) => {
+        outputValues.set(`${nodeId}_${y}`, i === sel ? d : false);
+      });
+      computedNodes.add(nodeId);
+      return;
+    }
+
     const def = gateDefinitions[node.type];
     if (def) {
       const inputs = getInputValues(nodeId);
@@ -295,7 +329,15 @@ export function getNodeInputHandles(type: NodeType): string[] {
       return ['d', 'en'];
     case 'REGISTER':
       return ['d0', 'd1', 'd2', 'd3', 'load'];
+    case 'REGISTER_8BIT':
+      return ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'load'];
+    case 'REGISTER_16BIT':
+      return ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10', 'd11', 'd12', 'd13', 'd14', 'd15', 'load'];
+    case 'SHIFT_REGISTER':
+      return ['dIn', 'clk', 'load'];
     case 'COUNTER_4BIT':
+      return ['clk', 'reset'];
+    case 'COUNTER_8BIT':
       return ['clk', 'reset'];
     case 'HALF_ADDER':
       return ['a', 'b'];
@@ -305,14 +347,20 @@ export function getNodeInputHandles(type: NodeType): string[] {
       return ['d0', 'd1', 'sel'];
     case 'MUX_4_1':
       return ['d0', 'd1', 'd2', 'd3', 'sel0', 'sel1'];
+    case 'MUX_8_1':
+      return ['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'sel0', 'sel1'];
     case 'DEMUX_1_2':
       return ['d', 'sel'];
+    case 'DEMUX_1_4':
+      return ['d', 'sel0', 'sel1'];
     case 'DECODER_2_4':
       return ['a0', 'a1'];
     case 'DECODER_3_8':
       return ['a0', 'a1', 'a2'];
     case 'ENCODER_4_2':
       return ['d0', 'd1', 'd2', 'd3'];
+    case 'STATE_MACHINE':
+      return ['input', 'clk'];
     default:
       return ['in1', 'in2'];
   }
@@ -328,21 +376,31 @@ export function getNodeOutputHandles(type: NodeType): string[] {
     case 'LATCH_D':
       return ['q', 'qNot'];
     case 'REGISTER':
+    case 'REGISTER_8BIT':
+    case 'SHIFT_REGISTER':
       return ['q0', 'q1', 'q2', 'q3'];
+    case 'REGISTER_16BIT':
+      return ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15'];
     case 'COUNTER_4BIT':
       return ['q0', 'q1', 'q2', 'q3'];
+    case 'COUNTER_8BIT':
+      return ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'];
     case 'HALF_ADDER':
       return ['sum', 'carry'];
     case 'FULL_ADDER':
       return ['sum', 'carry'];
     case 'DEMUX_1_2':
       return ['y0', 'y1'];
+    case 'DEMUX_1_4':
+      return ['y0', 'y1', 'y2', 'y3'];
     case 'DECODER_2_4':
       return ['y0', 'y1', 'y2', 'y3'];
     case 'DECODER_3_8':
       return ['y0', 'y1', 'y2', 'y3', 'y4', 'y5', 'y6', 'y7'];
     case 'ENCODER_4_2':
       return ['y0', 'y1'];
+    case 'STATE_MACHINE':
+      return ['out', 'state'];
     default:
       return ['out'];
   }

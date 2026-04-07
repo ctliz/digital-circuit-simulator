@@ -371,6 +371,151 @@ function Counter4BitNode({ data }: { data: { count?: number } }) {
   );
 }
 
+function Register8BitNode({ data }: { data: { values?: boolean[] } }) {
+  const { t } = useI18n();
+  const values = data.values || Array(8).fill(false);
+  return (
+    <div className="node register-node wide">
+      <Handle type="target" position={Position.Left} id="d0" style={{ top: '12%' }} />
+      <Handle type="target" position={Position.Left} id="d1" style={{ top: '22%' }} />
+      <Handle type="target" position={Position.Left} id="d2" style={{ top: '32%' }} />
+      <Handle type="target" position={Position.Left} id="d3" style={{ top: '42%' }} />
+      <Handle type="target" position={Position.Left} id="d4" style={{ top: '52%' }} />
+      <Handle type="target" position={Position.Left} id="d5" style={{ top: '62%' }} />
+      <Handle type="target" position={Position.Left} id="d6" style={{ top: '72%' }} />
+      <Handle type="target" position={Position.Left} id="d7" style={{ top: '82%' }} />
+      <Handle type="target" position={Position.Left} id="load" style={{ top: '95%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '12%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '22%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '32%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '42%' }} />
+      <Handle type="source" position={Position.Right} id="q4" style={{ top: '52%' }} />
+      <Handle type="source" position={Position.Right} id="q5" style={{ top: '62%' }} />
+      <Handle type="source" position={Position.Right} id="q6" style={{ top: '72%' }} />
+      <Handle type="source" position={Position.Right} id="q7" style={{ top: '82%' }} />
+      <div className="ff-label">{t('gates.REGISTER_8BIT')}</div>
+      <div className="reg-outputs">
+        {values.map((v, i) => (
+          <span key={i} className={v ? 'high' : 'low'}>{(v ? 1 : 0)}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ShiftRegisterNode({ data }: { data: { values?: boolean[] } }) {
+  const { t } = useI18n();
+  const values = data.values || [false, false, false, false];
+  return (
+    <div className="node shift-node">
+      <Handle type="target" position={Position.Left} id="dIn" style={{ top: '35%' }} />
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '55%' }} />
+      <Handle type="target" position={Position.Left} id="load" style={{ top: '75%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '20%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '40%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '60%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '80%' }} />
+      <div className="ff-label">{t('gates.SHIFT_REGISTER')}</div>
+      <div className="reg-outputs">
+        {values.map((v, i) => (
+          <span key={i} className={v ? 'high' : 'low'}>{(v ? 1 : 0)}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Counter8BitNode({ data }: { data: { count?: number } }) {
+  const { t } = useI18n();
+  const count = data.count ?? 0;
+  const bits = Array.from({ length: 8 }, (_, i) => (count >> i) & 1);
+  return (
+    <div className="node counter-node wide">
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '40%' }} />
+      <Handle type="target" position={Position.Left} id="reset" style={{ top: '70%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '15%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '25%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '45%' }} />
+      <Handle type="source" position={Position.Right} id="q4" style={{ top: '55%' }} />
+      <Handle type="source" position={Position.Right} id="q5" style={{ top: '65%' }} />
+      <Handle type="source" position={Position.Right} id="q6" style={{ top: '75%' }} />
+      <Handle type="source" position={Position.Right} id="q7" style={{ top: '85%' }} />
+      <div className="ff-label">{t('gates.COUNTER_8BIT')}</div>
+      <div className="counter-display">{count.toString(2).padStart(8, '0')}</div>
+      <div className="counter-bits">
+        {bits.map((b, i) => (
+          <span key={i} className={b ? 'high' : 'low'}>{b}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Mux8_1Node({ data }: { data: { state?: boolean } }) {
+  const { t } = useI18n();
+  return (
+    <div className="node mux-node wide">
+      <Handle type="target" position={Position.Left} id="d0" style={{ top: '8%' }} />
+      <Handle type="target" position={Position.Left} id="d1" style={{ top: '16%' }} />
+      <Handle type="target" position={Position.Left} id="d2" style={{ top: '24%' }} />
+      <Handle type="target" position={Position.Left} id="d3" style={{ top: '32%' }} />
+      <Handle type="target" position={Position.Left} id="d4" style={{ top: '40%' }} />
+      <Handle type="target" position={Position.Left} id="d5" style={{ top: '48%' }} />
+      <Handle type="target" position={Position.Left} id="d6" style={{ top: '56%' }} />
+      <Handle type="target" position={Position.Left} id="d7" style={{ top: '64%' }} />
+      <Handle type="target" position={Position.Left} id="sel0" style={{ top: '80%' }} />
+      <Handle type="target" position={Position.Left} id="sel1" style={{ top: '92%' }} />
+      <Handle type="source" position={Position.Right} id="out" style={{ top: '50%' }} />
+      <div className="gate-symbol">MUX</div>
+      <div className="gate-name">{t('gates.MUX_8_1')}</div>
+      <div className={`node-state ${data.state ? 'high' : 'low'}`}>
+        {data.state ? '1' : '0'}
+      </div>
+    </div>
+  );
+}
+
+function Demux1_4Node({ data }: { data: { outputs?: boolean[] } }) {
+  const { t } = useI18n();
+  const outputs = data.outputs || [false, false, false, false];
+  return (
+    <div className="node demux-node">
+      <Handle type="target" position={Position.Left} id="d" style={{ top: '35%' }} />
+      <Handle type="target" position={Position.Left} id="sel0" style={{ top: '60%' }} />
+      <Handle type="target" position={Position.Left} id="sel1" style={{ top: '80%' }} />
+      <Handle type="source" position={Position.Right} id="y0" style={{ top: '15%' }} />
+      <Handle type="source" position={Position.Right} id="y1" style={{ top: '38%' }} />
+      <Handle type="source" position={Position.Right} id="y2" style={{ top: '62%' }} />
+      <Handle type="source" position={Position.Right} id="y3" style={{ top: '85%' }} />
+      <div className="gate-symbol">DEMUX</div>
+      <div className="gate-name">{t('gates.DEMUX_1_4')}</div>
+      <div className="decoder-outputs">
+        {outputs.map((v, i) => (
+          <span key={i} className={v ? 'high' : 'low'}>Y{i}:{v ? '1' : '0'}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StateMachineNode({ data }: { data: { state?: number } }) {
+  const { t } = useI18n();
+  const state = data.state ?? 0;
+  return (
+    <div className="node state-machine-node">
+      <Handle type="target" position={Position.Left} id="input" style={{ top: '35%' }} />
+      <Handle type="target" position={Position.Left} id="clk" style={{ top: '65%' }} />
+      <Handle type="source" position={Position.Right} id="out" style={{ top: '35%' }} />
+      <Handle type="source" position={Position.Right} id="state" style={{ top: '65%' }} />
+      <div className="ff-label">{t('gates.STATE_MACHINE')}</div>
+      <div className="compound-outputs">
+        <span>State: {state}</span>
+      </div>
+    </div>
+  );
+}
+
 const nodeTypes: NodeTypes = {
   INPUT: InputNode,
   OUTPUT: OutputNode,
@@ -388,15 +533,21 @@ const nodeTypes: NodeTypes = {
   LATCH_SR: SRLatchNode,
   LATCH_D: DLatchNode,
   REGISTER: RegisterNode,
+  REGISTER_8BIT: Register8BitNode,
+  SHIFT_REGISTER: ShiftRegisterNode,
   COUNTER_4BIT: Counter4BitNode,
+  COUNTER_8BIT: Counter8BitNode,
   HALF_ADDER: HalfAdderNode,
   FULL_ADDER: FullAdderNode,
   MUX_2_1: Mux2_1Node,
   MUX_4_1: Mux4_1Node,
+  MUX_8_1: Mux8_1Node,
   DEMUX_1_2: Demux1_2Node,
+  DEMUX_1_4: Demux1_4Node,
   DECODER_2_4: Decoder2_4Node,
   DECODER_3_8: Decoder3_8Node,
   ENCODER_4_2: Encoder4_2Node,
+  STATE_MACHINE: StateMachineNode,
 };
 
 export function Canvas() {

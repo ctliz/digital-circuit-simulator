@@ -18,6 +18,7 @@ import {
   Layers,
   Share2,
   FlipHorizontal,
+  ArrowRight,
 } from 'lucide-react';
 
 const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -40,7 +41,10 @@ const sequentialButtons: { type: NodeType; icon: React.ReactNode; labelKey: stri
   { type: 'LATCH_SR', icon: <FlipHorizontal size={18} />, labelKey: 'gates.LATCH_SR' },
   { type: 'LATCH_D', icon: <FlipHorizontal size={18} />, labelKey: 'gates.LATCH_D' },
   { type: 'REGISTER', icon: <HardDrive size={18} />, labelKey: 'gates.REGISTER' },
+  { type: 'REGISTER_8BIT', icon: <HardDrive size={18} />, labelKey: 'gates.REGISTER_8BIT' },
+  { type: 'SHIFT_REGISTER', icon: <ArrowRight size={18} />, labelKey: 'gates.SHIFT_REGISTER' },
   { type: 'COUNTER_4BIT', icon: <HardDrive size={18} />, labelKey: 'gates.COUNTER_4BIT' },
+  { type: 'COUNTER_8BIT', icon: <HardDrive size={18} />, labelKey: 'gates.COUNTER_8BIT' },
 ];
 
 const arithmeticButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -51,13 +55,16 @@ const arithmeticButtons: { type: NodeType; icon: React.ReactNode; labelKey: stri
 const muxDemuxButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
   { type: 'MUX_2_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_2_1' },
   { type: 'MUX_4_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_4_1' },
+  { type: 'MUX_8_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_8_1' },
   { type: 'DEMUX_1_2', icon: <Share2 size={18} />, labelKey: 'gates.DEMUX_1_2' },
+  { type: 'DEMUX_1_4', icon: <Share2 size={18} />, labelKey: 'gates.DEMUX_1_4' },
 ];
 
 const codecButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
   { type: 'DECODER_2_4', icon: <Layers size={18} />, labelKey: 'gates.DECODER_2_4' },
   { type: 'DECODER_3_8', icon: <Layers size={18} />, labelKey: 'gates.DECODER_3_8' },
   { type: 'ENCODER_4_2', icon: <Layers size={18} />, labelKey: 'gates.ENCODER_4_2' },
+  { type: 'STATE_MACHINE', icon: <Layers size={18} />, labelKey: 'gates.STATE_MACHINE' },
 ];
 
 export function Toolbar() {

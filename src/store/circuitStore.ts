@@ -48,14 +48,27 @@ export const useCircuitStore = create<CircuitStore>((set) => ({
         internalState = { q: false, lastClock: false };
         break;
       case 'REGISTER':
-        internalState = { values: [false, false, false, false] };
+      case 'REGISTER_8BIT':
+        internalState = { values: Array(8).fill(false) };
+        break;
+      case 'REGISTER_16BIT':
+        internalState = { values: Array(16).fill(false) };
+        break;
+      case 'SHIFT_REGISTER':
+        internalState = { values: [false, false, false, false], shiftValue: false };
         break;
       case 'COUNTER_4BIT':
-        internalState = { count: 0 };
+        internalState = { count: 0, lastClock: false };
+        break;
+      case 'COUNTER_8BIT':
+        internalState = { count: 0, lastClock: false };
         break;
       case 'LATCH_SR':
       case 'LATCH_D':
         internalState = { q: false };
+        break;
+      case 'STATE_MACHINE':
+        internalState = { stateValue: 0 };
         break;
       default:
         internalState = undefined;

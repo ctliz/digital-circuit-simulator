@@ -137,14 +137,16 @@ function App() {
           updateNode(node.id, {
             internalState: { count: newCount, lastClock: clk },
           });
-        } else if (node.type === 'REGISTER') {
+        } else if (node.type === 'REGISTER' || node.type === 'REGISTER_8BIT') {
           const loadConn = connections.find(
             (c) => c.target === node.id && c.targetHandle === 'load'
           );
           const load = loadConn ? (results.get(loadConn.source) ?? false) : false;
 
           if (load) {
-            const newValues = ['d0', 'd1', 'd2', 'd3'].map((handle) => {
+            const bitCount = node.type === 'REGISTER' ? 4 : 8;
+            const handles = Array.from({ length: bitCount }, (_, i) => `d${i}`);
+            const newValues = handles.map((handle) => {
               const conn = connections.find(
                 (c) => c.target === node.id && c.targetHandle === handle
               );
@@ -154,6 +156,87 @@ function App() {
               internalState: { values: newValues },
             });
           }
+        } else if (node.type === 'REGISTER_16BIT') {
+          const loadConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'load'
+          );
+          const load = loadConn ? (results.get(loadConn.source) ?? false) : false;
+
+          if (load) {
+            const handles = Array.from({ length: 16 }, (_, i) => `d${i}`);
+            const newValues = handles.map((handle) => {
+              const conn = connections.find(
+                (c) => c.target === node.id && c.targetHandle === handle
+              );
+              return conn ? (results.get(conn.source) ?? false) : false;
+            });
+            updateNode(node.id, {
+              internalState: { values: newValues },
+            });
+          }
+        } else if (node.type === 'SHIFT_REGISTER') {
+          const clkConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'clk'
+          );
+          const loadConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'load'
+          );
+          const dInConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'dIn'
+          );
+          const clk = clkConn ? (results.get(clkConn.source) ?? false) : false;
+          const load = loadConn ? (results.get(loadConn.source) ?? false) : false;
+          const dIn = dInConn ? (results.get(dInConn.source) ?? false) : false;
+          const lastClk = node.internalState?.lastClock ?? false;
+          const risingEdge = clk && !lastClk;
+          const currentValues = node.internalState?.values ?? [false, false, false, false];
+          
+          let newValues: boolean[];
+          if (load && risingEdge) {
+            newValues = [dIn, ...currentValues.slice(0, 3)];
+          } else {
+            newValues = currentValues;
+          }
+          updateNode(node.id, {
+            internalState: { values: newValues, shiftValue: dIn, lastClock: clk },
+          });
+        } else if (node.type === 'COUNTER_8BIT') {
+          const clkConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'clk'
+          );
+          const resetConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'reset'
+          );
+          const clk = clkConn ? (results.get(clkConn.source) ?? false) : false;
+          const reset = resetConn ? (results.get(resetConn.source) ?? false) : false;
+          const lastClk = node.internalState?.lastClock ?? false;
+          const risingEdge = clk && !lastClk;
+          const currentCount = node.internalState?.count ?? 0;
+          const newCount = reset ? 0 : (risingEdge ? (currentCount + 1) % 256 : currentCount);
+          updateNode(node.id, {
+            internalState: { count: newCount, lastClock: clk },
+          });
+        } else if (node.type === 'STATE_MACHINE') {
+          const inputConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'input'
+          );
+          const clkConn = connections.find(
+            (c) => c.target === node.id && c.targetHandle === 'clk'
+          );
+          const inputVal = inputConn ? (results.get(inputConn.source) ?? false) : false;
+          const clk = clkConn ? (results.get(clkConn.source) ?? false) : false;
+          const lastClk = node.internalState?.lastClock ?? false;
+          const risingEdge = clk && !lastClk;
+          const currentState = node.internalState?.stateValue ?? 0;
+          
+          let newState = currentState;
+          if (risingEdge) {
+            newState = (currentState + 1) % 4;
+          }
+          updateNode(node.id, {
+            state: inputVal,
+            internalState: { stateValue: newState, lastClock: clk },
+          });
         } else {
           const result = results.get(node.id);
           if (result !== undefined) {

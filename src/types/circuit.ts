@@ -15,15 +15,22 @@ export type NodeType =
   | 'LATCH_D'
   | 'CLOCK'
   | 'REGISTER'
+  | 'REGISTER_8BIT'
+  | 'REGISTER_16BIT'
+  | 'SHIFT_REGISTER'
   | 'COUNTER_4BIT'
+  | 'COUNTER_8BIT'
   | 'HALF_ADDER'
   | 'FULL_ADDER'
   | 'MUX_2_1'
   | 'MUX_4_1'
+  | 'MUX_8_1'
   | 'DEMUX_1_2'
+  | 'DEMUX_1_4'
   | 'DECODER_2_4'
   | 'DECODER_3_8'
-  | 'ENCODER_4_2';
+  | 'ENCODER_4_2'
+  | 'STATE_MACHINE';
 
 export interface CircuitNode {
   id: string;
@@ -41,6 +48,8 @@ export interface CircuitNode {
     lastT?: boolean;
     s?: boolean;
     r?: boolean;
+    shiftValue?: boolean;
+    stateValue?: number;
   };
 }
 

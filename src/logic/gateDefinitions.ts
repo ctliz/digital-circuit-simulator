@@ -215,6 +215,66 @@ export const gateDefinitions: Record<NodeType, GateDefinition> = {
     evaluate: () => false,
     outputCount: 4,
   },
+  REGISTER_8BIT: {
+    type: 'REGISTER_8BIT',
+    name: '8-bit Register',
+    inputCount: 9,
+    symbol: 'REG8',
+    evaluate: () => false,
+    outputCount: 8,
+  },
+  REGISTER_16BIT: {
+    type: 'REGISTER_16BIT',
+    name: '16-bit Register',
+    inputCount: 17,
+    symbol: 'REG16',
+    evaluate: () => false,
+    outputCount: 16,
+  },
+  SHIFT_REGISTER: {
+    type: 'SHIFT_REGISTER',
+    name: 'Shift Register',
+    inputCount: 3,
+    symbol: 'SHIFT',
+    evaluate: () => false,
+    outputCount: 4,
+  },
+  COUNTER_8BIT: {
+    type: 'COUNTER_8BIT',
+    name: '8-bit Counter',
+    inputCount: 2,
+    symbol: 'CNT8',
+    evaluate: () => false,
+    outputCount: 8,
+  },
+  MUX_8_1: {
+    type: 'MUX_8_1',
+    name: '8-1 MUX',
+    inputCount: 10,
+    symbol: 'MUX',
+    evaluate: (inputs) => {
+      const d = inputs.slice(0, 8);
+      const sel0 = inputs[8] ? 1 : 0;
+      const sel1 = inputs[9] ? 2 : 0;
+      const sel = sel0 + sel1;
+      return d[sel];
+    },
+  },
+  DEMUX_1_4: {
+    type: 'DEMUX_1_4',
+    name: '1-4 DEMUX',
+    inputCount: 3,
+    symbol: 'DEMUX',
+    evaluate: () => false,
+    outputCount: 4,
+  },
+  STATE_MACHINE: {
+    type: 'STATE_MACHINE',
+    name: 'State Machine',
+    inputCount: 2,
+    symbol: 'FSM',
+    evaluate: () => false,
+  },
 };
 
 export function getHalfAdderOutputs(inputs: boolean[]): { sum: boolean; carry: boolean } {

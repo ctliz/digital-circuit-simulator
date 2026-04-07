@@ -949,3 +949,33 @@ body {
   border: 1px solid #ddd;
   border-radius: 2px;
 }
+
+/* Register Node */
+.register-node.wide {
+  min-width: 120px;
+}
+
+/* Shift Register Node */
+.shift-node {
+  min-width: 100px;
+}
+
+/* Counter Node Wide */
+.counter-node.wide {
+  min-width: 140px;
+}
+
+/* MUX Node Wide */
+.mux-node.wide {
+  min-width: 100px;
+}
+
+/* State Machine Node */
+.state-machine-node {
+  min-width: 110px;
+}
+
+.state-machine-node .compound-outputs span {
+  display: block;
+  margin-top: 4px;
+}

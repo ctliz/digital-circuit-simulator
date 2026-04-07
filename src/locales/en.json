@@ -32,15 +32,21 @@
     "LATCH_D": "D Latch",
     "CLOCK": "Clock",
     "REGISTER": "Register",
+    "REGISTER_8BIT": "8-bit Register",
+    "SHIFT_REGISTER": "Shift Register",
     "COUNTER_4BIT": "4-bit Counter",
+    "COUNTER_8BIT": "8-bit Counter",
     "HALF_ADDER": "Half Adder",
     "FULL_ADDER": "Full Adder",
     "MUX_2_1": "2-1 MUX",
     "MUX_4_1": "4-1 MUX",
+    "MUX_8_1": "8-1 MUX",
     "DEMUX_1_2": "1-2 DEMUX",
+    "DEMUX_1_4": "1-4 DEMUX",
     "DECODER_2_4": "2-4 Decoder",
     "DECODER_3_8": "3-8 Decoder",
-    "ENCODER_4_2": "4-2 Encoder"
+    "ENCODER_4_2": "4-2 Encoder",
+    "STATE_MACHINE": "State Machine"
   },
   "monitor": {
     "title": "Signal Monitor",

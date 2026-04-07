@@ -38,7 +38,12 @@ Based on **Mano's Digital Design** textbook curriculum.
 - **SR Latch**: Set-Reset latch
 - **D Latch**: Data latch with enable
 - **Register**: 4-bit register with load enable
+- **8-bit Register**: 8-bit register with load enable
+- **16-bit Register**: 16-bit register with load enable
+- **Shift Register**: 4-bit shift register with serial input
 - **4-bit Counter**: Binary counter with reset
+- **8-bit Counter**: Binary counter with reset
+- **State Machine**: Finite state machine component
 - **Clock**: Oscillating signal generator (0.1-10 Hz)
 
 ### Truth Table Generator

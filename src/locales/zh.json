@@ -32,15 +32,21 @@
     "LATCH_D": "D锁存器",
     "CLOCK": "时钟",
     "REGISTER": "寄存器",
+    "REGISTER_8BIT": "8位寄存器",
+    "SHIFT_REGISTER": "移位寄存器",
     "COUNTER_4BIT": "4位计数器",
+    "COUNTER_8BIT": "8位计数器",
     "HALF_ADDER": "半加器",
     "FULL_ADDER": "全加器",
     "MUX_2_1": "2选1多路复用器",
     "MUX_4_1": "4选1多路复用器",
+    "MUX_8_1": "8选1多路复用器",
     "DEMUX_1_2": "1分2分配器",
+    "DEMUX_1_4": "1分4分配器",
     "DECODER_2_4": "2-4译码器",
     "DECODER_3_8": "3-8译码器",
-    "ENCODER_4_2": "4-2编码器"
+    "ENCODER_4_2": "4-2编码器",
+    "STATE_MACHINE": "状态机"
   },
   "monitor": {
     "title": "信号监测面板",
