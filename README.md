@@ -75,6 +75,7 @@ Based on **Mano's Digital Design** textbook curriculum.
 - **Waveform Viewer**: Real-time signal waveform visualization with time axis
 - **Example Circuit Library**: 7 pre-built example circuits (AND gate, Half/Full Adder, SR Latch, D Flip-Flop, 4-bit Counter, 2-4 Decoder)
 - **Circuit Save/Load**: Export circuits as JSON files and reload later
+- **Circuit Library**: Save, load, rename, and delete circuit designs with local storage
 
 ---
 
@@ -158,7 +159,8 @@ digital-circuit-simulator/
 │   │   ├── TruthTablePanel.tsx # Truth table generator
 │   │   ├── KMapPanel.tsx      # K-map visualization
 │   │   ├── ExamplesPanel.tsx  # Example circuit library
-│   │   └── WaveformPanel.tsx   # Waveform viewer
+│   │   ├── WaveformPanel.tsx   # Waveform viewer
+│   │   └── LibraryPanel.tsx    # Circuit library management
 │   ├── i18n/               # Internationalization
 │   │   ├── index.tsx         # i18n context
 │   │   ├── useI18n.ts        # i18n hook
@@ -199,8 +201,7 @@ This project follows the curriculum of **Mano's Digital Design**:
 ## Roadmap
 
 Future enhancements planned:
-- [ ]更多示例电路
-- [ ] 电路设计命名管理
+- [ ] 更多示例电路
 
 ---
 

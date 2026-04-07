@@ -1160,3 +1160,149 @@ body {
   margin-left: auto;
 }
 .panel-close-btn:hover { color: #94a3b8; }
+
+/* Circuit name in header */
+.circuit-name-wrap {
+  display: flex;
+  align-items: center;
+}
+.circuit-name-display {
+  font-size: 12px;
+  color: #94a3b8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: text;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.circuit-name-display:hover { border-color: #1e3a5f; color: #e2e8f0; }
+.circuit-name-input {
+  font-size: 12px;
+  color: #e2e8f0;
+  background: #0a1628;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 3px 8px;
+  outline: none;
+  width: 160px;
+}
+
+/* Category tabs in examples panel */
+.category-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #1e3a5f;
+  flex-wrap: wrap;
+}
+.category-tab {
+  background: transparent;
+  border: 1px solid #1e3a5f;
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 11px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.category-tab:hover { color: #94a3b8; border-color: #2d4a6e; }
+.category-tab.active { font-weight: 600; }
+
+/* Example card top row */
+.example-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.example-card-top .example-name { margin-bottom: 0; }
+.example-category-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Library panel */
+.library-panel { width: 560px; }
+.library-save-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #1e3a5f;
+  background: #0a1628;
+}
+.library-current-name {
+  font-size: 12px;
+  color: #64748b;
+}
+.library-current-name strong { color: #e2e8f0; }
+.library-save-btn {
+  background: #1e40af;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.library-save-btn:hover { background: #2563eb; }
+.library-empty {
+  padding: 32px 20px;
+  text-align: center;
+  color: #475569;
+  font-size: 13px;
+}
+.library-list {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+}
+.library-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #0f2041;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.library-item:hover { background: #0f2041; }
+.library-item-info { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.library-item-name { font-size: 13px; color: #e2e8f0; font-weight: 500; }
+.library-item-meta { font-size: 11px; color: #475569; }
+.library-rename-input {
+  font-size: 13px;
+  color: #e2e8f0;
+  background: #0a1628;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 2px 6px;
+  outline: none;
+  width: 200px;
+}
+.library-item-actions { display: flex; gap: 4px; }
+.lib-action-btn {
+  background: transparent;
+  border: 1px solid #1e3a5f;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s;
+}
+.lib-action-btn.load { color: #3b82f6; }
+.lib-action-btn.load:hover { background: #1e3a5f; }
+.lib-action-btn.delete { color: #ef4444; }
+.lib-action-btn.delete:hover { background: #3f0a0a; border-color: #7f1d1d; }
+.panel-close-btn:hover { color: #94a3b8; }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Toolbar } from './components/Toolbar';
 import { Canvas } from './components/Canvas';
 import { PropertiesPanel } from './components/PropertiesPanel';
@@ -8,6 +8,7 @@ import { TruthTablePanel } from './components/TruthTablePanel';
 import { KMapPanel } from './components/KMapPanel';
 import { WaveformPanel } from './components/WaveformPanel';
 import { ExamplesPanel } from './components/ExamplesPanel';
+import { LibraryPanel } from './components/LibraryPanel';
 import { useCircuitStore } from './store/circuitStore';
 import { useI18n } from './i18n/useI18n';
 import { evaluateCombinationalCircuit } from './logic/circuitEngine';
@@ -28,9 +29,13 @@ function App() {
     clearSignalHistory,
     exportCircuit,
     importCircuit,
+    circuitName,
+    setCircuitName,
   } = useCircuitStore();
   const { locale, setLocale, t } = useI18n();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState('');
 
   useEffect(() => {
     if (!isRunning) return;
@@ -325,6 +330,11 @@ function App() {
     e.target.value = ''; // reset so same file can be loaded again
   };
 
+  const commitName = () => {
+    setCircuitName(nameInput.trim() || t('circuit.untitled'));
+    setEditingName(false);
+  };
+
   return (
     <div className="app">
       <div className="lang-switch">
@@ -345,6 +355,27 @@ function App() {
             />
           </label>
           <ExamplesPanel />
+          <LibraryPanel />
+        </div>
+        <div className="circuit-name-wrap">
+          {editingName ? (
+            <input
+              className="circuit-name-input"
+              value={nameInput}
+              autoFocus
+              onChange={(e) => setNameInput(e.target.value)}
+              onBlur={commitName}
+              onKeyDown={(e) => { if (e.key === 'Enter') commitName(); if (e.key === 'Escape') setEditingName(false); }}
+            />
+          ) : (
+            <span
+              className="circuit-name-display"
+              title={t('library.doubleClickRename')}
+              onDoubleClick={() => { setNameInput(circuitName); setEditingName(true); }}
+            >
+              {circuitName}
+            </span>
+          )}
         </div>
         <button
           className={`lang-btn ${locale === 'zh' ? 'active' : ''}`}

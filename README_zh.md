@@ -77,6 +77,7 @@
 - **波形查看器**: 实时信号波形可视化，带时间轴
 - **示例电路库**: 7个预置示例电路（与门、半加器、全加器、SR锁存器、D触发器、4位计数器、2-4译码器）
 - **电路保存/加载**: 导出电路为 JSON 文件并可重新加载
+- **电路库管理**: 保存、加载、重命名、删除电路设计，本地存储
 
 ---
 
@@ -160,7 +161,8 @@ digital-circuit-simulator/
 │   │   ├── TruthTablePanel.tsx # 真值表生成
 │   │   ├── KMapPanel.tsx      # 卡诺图可视化
 │   │   ├── ExamplesPanel.tsx  # 示例电路库
-│   │   └── WaveformPanel.tsx   # 波形查看器
+│   │   ├── WaveformPanel.tsx   # 波形查看器
+│   │   └── LibraryPanel.tsx    # 电路库管理
 │   ├── i18n/               # 国际化
 │   │   ├── index.tsx         # i18n 上下文
 │   │   ├── useI18n.ts        # i18n hook
@@ -200,7 +202,6 @@ digital-circuit-simulator/
 
 计划中的功能：
 - [ ] 更多示例电路
-- [ ] 电路设计命名管理
 
 ---
 

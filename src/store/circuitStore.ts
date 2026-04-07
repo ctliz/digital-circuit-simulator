@@ -1,6 +1,28 @@
 import { create } from 'zustand';
 import type { CircuitNode, Connection, NodeType } from '../types/circuit';
 
+export interface SavedCircuit {
+  id: string;
+  name: string;
+  savedAt: number;
+  nodeCount: number;
+  nodes: CircuitNode[];
+  connections: Connection[];
+  clockFrequency: number;
+}
+
+const LIBRARY_KEY = 'dcs_library';
+
+function loadLibraryFromStorage(): SavedCircuit[] {
+  try {
+    return JSON.parse(localStorage.getItem(LIBRARY_KEY) ?? '[]');
+  } catch { return []; }
+}
+
+function saveLibraryToStorage(lib: SavedCircuit[]) {
+  localStorage.setItem(LIBRARY_KEY, JSON.stringify(lib));
+}
+
 interface CircuitStore {
   nodes: CircuitNode[];
   connections: Connection[];
@@ -9,6 +31,7 @@ interface CircuitStore {
   clockCycle: number;
   selectedNodeId: string | null;
   signalHistory: Record<string, boolean[]>;
+  circuitName: string;
 
   addNode: (type: NodeType, position: { x: number; y: number }) => void;
   removeNode: (id: string) => void;
@@ -26,6 +49,11 @@ interface CircuitStore {
   exportCircuit: (name?: string) => void;
   importCircuit: (json: string) => boolean;
   loadExample: (nodes: CircuitNode[], connections: Omit<Connection, 'id'>[], clockFreq?: number) => void;
+  setCircuitName: (name: string) => void;
+  saveToLibrary: () => void;
+  getLibrary: () => SavedCircuit[];
+  loadFromLibrary: (id: string) => boolean;
+  deleteFromLibrary: (id: string) => void;
 }
 
 let nodeIdCounter = 0;
@@ -43,6 +71,7 @@ export const useCircuitStore = create<CircuitStore>((set, get) => ({
   clockCycle: 0,
   selectedNodeId: null,
   signalHistory: {},
+  circuitName: 'Untitled',
 
   addNode: (type, position) => {
     const id = generateId(type.toLowerCase());
@@ -165,6 +194,7 @@ export const useCircuitStore = create<CircuitStore>((set, get) => ({
       selectedNodeId: null,
       clockCycle: 0,
       signalHistory: {},
+      circuitName: 'Untitled',
     }),
 
   recordSignals: (signals) => set((state) => {
@@ -179,8 +209,9 @@ export const useCircuitStore = create<CircuitStore>((set, get) => ({
 
   clearSignalHistory: () => set({ signalHistory: {} }),
 
-  exportCircuit: (name = 'circuit') => {
-    const { nodes, connections, clockFrequency } = get();
+  exportCircuit: () => {
+    const { nodes, connections, clockFrequency, circuitName } = get();
+    const name = circuitName || 'circuit';
     const data = { version: 1, name, nodes, connections, clockFrequency };
     const json = JSON.stringify(data, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
@@ -194,9 +225,43 @@ export const useCircuitStore = create<CircuitStore>((set, get) => ({
     try {
       const data = JSON.parse(json);
       if (!Array.isArray(data.nodes) || !Array.isArray(data.connections)) return false;
-      set({ nodes: data.nodes, connections: data.connections, clockFrequency: data.clockFrequency ?? 1, signalHistory: {}, clockCycle: 0, isRunning: false, selectedNodeId: null });
+      set({ nodes: data.nodes, connections: data.connections, clockFrequency: data.clockFrequency ?? 1, signalHistory: {}, clockCycle: 0, isRunning: false, selectedNodeId: null, circuitName: data.name ?? 'Untitled' });
       return true;
     } catch { return false; }
+  },
+
+  setCircuitName: (name) => set({ circuitName: name }),
+
+  saveToLibrary: () => {
+    const { nodes, connections, clockFrequency, circuitName } = get();
+    const lib = loadLibraryFromStorage();
+    const id = `circuit_${Date.now()}`;
+    const entry: SavedCircuit = {
+      id,
+      name: circuitName || 'Untitled',
+      savedAt: Date.now(),
+      nodeCount: nodes.length,
+      nodes,
+      connections,
+      clockFrequency,
+    };
+    lib.unshift(entry);
+    saveLibraryToStorage(lib);
+  },
+
+  getLibrary: () => loadLibraryFromStorage(),
+
+  loadFromLibrary: (id) => {
+    const lib = loadLibraryFromStorage();
+    const entry = lib.find((e) => e.id === id);
+    if (!entry) return false;
+    set({ nodes: entry.nodes, connections: entry.connections, clockFrequency: entry.clockFrequency, circuitName: entry.name, signalHistory: {}, clockCycle: 0, isRunning: false, selectedNodeId: null });
+    return true;
+  },
+
+  deleteFromLibrary: (id) => {
+    const lib = loadLibraryFromStorage().filter((e) => e.id !== id);
+    saveLibraryToStorage(lib);
   },
 
   loadExample: (exNodes, exConns, clockFreq = 1) => {
