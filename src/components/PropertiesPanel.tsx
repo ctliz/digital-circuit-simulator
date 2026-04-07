@@ -1,5 +1,5 @@
 import { useCircuitStore } from '../store/circuitStore';
-import { useI18n } from '../i18n';
+import { useI18n } from '../i18n/useI18n';
 
 export function PropertiesPanel() {
   const { nodes, selectedNodeId, updateNode, clockFrequency, setClockFrequency } =

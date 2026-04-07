@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCircuitStore } from '../store/circuitStore';
-import { useI18n } from '../i18n';
+import { useI18n } from '../i18n/useI18n';
 import { Grid3X3 } from 'lucide-react';
 
 export function KMapPanel() {

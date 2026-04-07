@@ -30,7 +30,9 @@ export type NodeType =
   | 'DECODER_2_4'
   | 'DECODER_3_8'
   | 'ENCODER_4_2'
-  | 'STATE_MACHINE';
+  | 'STATE_MACHINE'
+  | 'RAM_16x4'
+  | 'ROM_16x4';
 
 export interface CircuitNode {
   id: string;
@@ -50,6 +52,7 @@ export interface CircuitNode {
     r?: boolean;
     shiftValue?: boolean;
     stateValue?: number;
+    memory?: boolean[][];
   };
 }
 

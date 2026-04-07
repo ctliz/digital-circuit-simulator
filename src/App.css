@@ -979,3 +979,38 @@ body {
   display: block;
   margin-top: 4px;
 }
+
+/* RAM Node */
+.ram-node {
+  min-width: 130px;
+  min-height: 160px;
+}
+
+/* ROM Node */
+.rom-node {
+  min-width: 130px;
+  min-height: 140px;
+}
+
+.ram-grid {
+  font-size: 10px;
+  font-family: monospace;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.ram-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.ram-addr {
+  color: #888;
+  min-width: 16px;
+}
+
+.ram-data {
+  color: #e94560;
+  letter-spacing: 1px;
+}

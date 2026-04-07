@@ -7,7 +7,7 @@ import { Tutorial } from './components/Tutorial';
 import { TruthTablePanel } from './components/TruthTablePanel';
 import { KMapPanel } from './components/KMapPanel';
 import { useCircuitStore } from './store/circuitStore';
-import { useI18n } from './i18n';
+import { useI18n } from './i18n/useI18n';
 import { evaluateCombinationalCircuit } from './logic/circuitEngine';
 
 import './App.css';
@@ -216,6 +216,41 @@ function App() {
           updateNode(node.id, {
             internalState: { count: newCount, lastClock: clk },
           });
+        } else if (node.type === 'RAM_16x4') {
+          const addrConns = ['addr0', 'addr1', 'addr2', 'addr3'].map((h) =>
+            connections.find((c) => c.target === node.id && c.targetHandle === h)
+          );
+          const dataConns = ['d0', 'd1', 'd2', 'd3'].map((h) =>
+            connections.find((c) => c.target === node.id && c.targetHandle === h)
+          );
+          const weConn = connections.find((c) => c.target === node.id && c.targetHandle === 'we');
+          const clkConn = connections.find((c) => c.target === node.id && c.targetHandle === 'clk');
+
+          const addr = addrConns.reduce((acc, conn, i) => {
+            const bit = conn ? (results.get(conn.source) ?? false) : false;
+            return acc + (bit ? (1 << i) : 0);
+          }, 0);
+          const we = weConn ? (results.get(weConn.source) ?? false) : false;
+          const clk = clkConn ? (results.get(clkConn.source) ?? false) : false;
+          const lastClk = node.internalState?.lastClock ?? false;
+          const risingEdge = clk && !lastClk;
+
+          const currentMemory = node.internalState?.memory ?? Array.from({ length: 16 }, () => [false, false, false, false]);
+          const newMemory = currentMemory.map((row) => [...row]);
+
+          if (we && risingEdge) {
+            newMemory[addr] = dataConns.map((conn) =>
+              conn ? (results.get(conn.source) ?? false) : false
+            );
+          }
+
+          updateNode(node.id, {
+            internalState: { memory: newMemory, lastClock: clk },
+          });
+        } else if (node.type === 'ROM_16x4') {
+          // ROM is combinational — just update address output passively (no clock needed)
+          // The actual output is computed in the render via internalState
+          // No state changes needed here since ROM content is fixed
         } else if (node.type === 'STATE_MACHINE') {
           const inputConn = connections.find(
             (c) => c.target === node.id && c.targetHandle === 'input'
@@ -247,7 +282,7 @@ function App() {
     }, 1000 / clockFrequency);
 
     return () => clearInterval(interval);
-  }, [isRunning, clockFrequency, clockCycle, nodes, connections]);
+  }, [isRunning, clockFrequency, clockCycle, nodes, connections, updateNode, incrementClockCycle]);
 
   return (
     <div className="app">

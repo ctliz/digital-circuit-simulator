@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCircuitStore } from '../store/circuitStore';
-import { useI18n } from '../i18n';
+import { useI18n } from '../i18n/useI18n';
 import { X, ChevronRight, ChevronLeft, Play, MousePointer, Link2 } from 'lucide-react';
 
 export function Tutorial() {

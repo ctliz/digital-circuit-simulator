@@ -1,6 +1,6 @@
 import type { NodeType } from '../types/circuit';
 import { useCircuitStore } from '../store/circuitStore';
-import { useI18n } from '../i18n';
+import { useI18n } from '../i18n/useI18n';
 import {
   Play,
   Pause,
@@ -19,6 +19,7 @@ import {
   Share2,
   FlipHorizontal,
   ArrowRight,
+  Database,
 } from 'lucide-react';
 
 const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -58,6 +59,11 @@ const muxDemuxButtons: { type: NodeType; icon: React.ReactNode; labelKey: string
   { type: 'MUX_8_1', icon: <GitBranch size={18} />, labelKey: 'gates.MUX_8_1' },
   { type: 'DEMUX_1_2', icon: <Share2 size={18} />, labelKey: 'gates.DEMUX_1_2' },
   { type: 'DEMUX_1_4', icon: <Share2 size={18} />, labelKey: 'gates.DEMUX_1_4' },
+];
+
+const memoryButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'RAM_16x4', icon: <Database size={18} />, labelKey: 'gates.RAM_16x4' },
+  { type: 'ROM_16x4', icon: <Database size={18} />, labelKey: 'gates.ROM_16x4' },
 ];
 
 const codecButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
@@ -147,6 +153,25 @@ export function Toolbar() {
         <div className="toolbar-label">{t('toolbar.muxDemux')}</div>
         <div className="toolbar-buttons">
           {muxDemuxButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.memory')}</div>
+        <div className="toolbar-buttons">
+          {memoryButtons.map(({ type, icon, labelKey }) => (
             <button
               key={type}
               className="toolbar-btn"

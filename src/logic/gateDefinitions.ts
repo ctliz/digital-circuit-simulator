@@ -275,6 +275,22 @@ export const gateDefinitions: Record<NodeType, GateDefinition> = {
     symbol: 'FSM',
     evaluate: () => false,
   },
+  RAM_16x4: {
+    type: 'RAM_16x4',
+    name: 'RAM 16×4',
+    inputCount: 10,
+    symbol: 'RAM',
+    evaluate: () => false,
+    outputCount: 4,
+  },
+  ROM_16x4: {
+    type: 'ROM_16x4',
+    name: 'ROM 16×4',
+    inputCount: 5,
+    symbol: 'ROM',
+    evaluate: () => false,
+    outputCount: 4,
+  },
 };
 
 export function getHalfAdderOutputs(inputs: boolean[]): { sum: boolean; carry: boolean } {

@@ -14,7 +14,7 @@ import 'reactflow/dist/style.css';
 import { useCircuitStore } from '../store/circuitStore';
 import type { NodeType } from '../types/circuit';
 import { gateDefinitions } from '../logic/gateDefinitions';
-import { useI18n } from '../i18n';
+import { useI18n } from '../i18n/useI18n';
 
 function InputNode({ data }: { data: { state?: boolean; label?: string } }) {
   const { t } = useI18n();
@@ -499,6 +499,68 @@ function Demux1_4Node({ data }: { data: { outputs?: boolean[] } }) {
   );
 }
 
+function Ram16x4Node({ data }: { data: { internalState?: { memory?: boolean[][] } } }) {
+  const { t } = useI18n();
+  const memory = data.internalState?.memory ?? Array.from({ length: 16 }, () => [false, false, false, false]);
+  return (
+    <div className="node ram-node">
+      <Handle type="target" position={Position.Left} id="addr0" style={{ top: '10%' }} />
+      <Handle type="target" position={Position.Left} id="addr1" style={{ top: '20%' }} />
+      <Handle type="target" position={Position.Left} id="addr2" style={{ top: '30%' }} />
+      <Handle type="target" position={Position.Left} id="addr3" style={{ top: '40%' }} />
+      <Handle type="target" position={Position.Left} id="d0" style={{ top: '53%' }} />
+      <Handle type="target" position={Position.Left} id="d1" style={{ top: '62%' }} />
+      <Handle type="target" position={Position.Left} id="d2" style={{ top: '71%' }} />
+      <Handle type="target" position={Position.Left} id="d3" style={{ top: '80%' }} />
+      <Handle type="target" position={Position.Left} id="we" style={{ top: '90%' }} />
+      <Handle type="target" position={Position.Bottom} id="clk" style={{ left: '50%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '25%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '40%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '55%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '70%' }} />
+      <div className="ff-label">{t('gates.RAM_16x4')}</div>
+      <div className="ram-grid">
+        {memory.slice(0, 8).map((row, i) => (
+          <div key={i} className="ram-row">
+            <span className="ram-addr">{i.toString(16).toUpperCase()}:</span>
+            <span className="ram-data">{row.map((b) => (b ? '1' : '0')).join('')}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Rom16x4Node({ data }: { data: { internalState?: { memory?: boolean[][] } } }) {
+  const { t } = useI18n();
+  const memory = data.internalState?.memory ?? Array.from({ length: 16 }, (_, i) => {
+    const gray = i ^ (i >> 1);
+    return [Boolean((gray >> 0) & 1), Boolean((gray >> 1) & 1), Boolean((gray >> 2) & 1), Boolean((gray >> 3) & 1)];
+  });
+  return (
+    <div className="node rom-node">
+      <Handle type="target" position={Position.Left} id="addr0" style={{ top: '15%' }} />
+      <Handle type="target" position={Position.Left} id="addr1" style={{ top: '30%' }} />
+      <Handle type="target" position={Position.Left} id="addr2" style={{ top: '45%' }} />
+      <Handle type="target" position={Position.Left} id="addr3" style={{ top: '60%' }} />
+      <Handle type="target" position={Position.Left} id="ce" style={{ top: '80%' }} />
+      <Handle type="source" position={Position.Right} id="q0" style={{ top: '25%' }} />
+      <Handle type="source" position={Position.Right} id="q1" style={{ top: '40%' }} />
+      <Handle type="source" position={Position.Right} id="q2" style={{ top: '55%' }} />
+      <Handle type="source" position={Position.Right} id="q3" style={{ top: '70%' }} />
+      <div className="ff-label">{t('gates.ROM_16x4')}</div>
+      <div className="ram-grid">
+        {memory.slice(0, 8).map((row, i) => (
+          <div key={i} className="ram-row">
+            <span className="ram-addr">{i.toString(16).toUpperCase()}:</span>
+            <span className="ram-data">{row.map((b) => (b ? '1' : '0')).join('')}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StateMachineNode({ data }: { data: { state?: number } }) {
   const { t } = useI18n();
   const state = data.state ?? 0;
@@ -548,6 +610,8 @@ const nodeTypes: NodeTypes = {
   DECODER_3_8: Decoder3_8Node,
   ENCODER_4_2: Encoder4_2Node,
   STATE_MACHINE: StateMachineNode,
+  RAM_16x4: Ram16x4Node,
+  ROM_16x4: Rom16x4Node,
 };
 
 export function Canvas() {
@@ -588,11 +652,11 @@ export function Canvas() {
 
   useEffect(() => {
     setNodes(rfNodes);
-  }, [storeNodes, setNodes]);
+  }, [rfNodes, setNodes]);
 
   useEffect(() => {
     setEdges(rfEdges);
-  }, [connections, setEdges]);
+  }, [rfEdges, setEdges]);
 
   const onConnect = useCallback(
     (params: Connection) => {

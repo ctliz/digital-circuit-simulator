@@ -70,6 +70,26 @@ export const useCircuitStore = create<CircuitStore>((set) => ({
       case 'STATE_MACHINE':
         internalState = { stateValue: 0 };
         break;
+      case 'RAM_16x4':
+        internalState = {
+          memory: Array.from({ length: 16 }, () => [false, false, false, false]),
+          lastClock: false,
+        };
+        break;
+      case 'ROM_16x4': {
+        // Pre-programmed with binary-to-Gray code conversion
+        const grayRom = Array.from({ length: 16 }, (_, i) => {
+          const gray = i ^ (i >> 1);
+          return [
+            Boolean((gray >> 0) & 1),
+            Boolean((gray >> 1) & 1),
+            Boolean((gray >> 2) & 1),
+            Boolean((gray >> 3) & 1),
+          ];
+        });
+        internalState = { memory: grayRom };
+        break;
+      }
       default:
         internalState = undefined;
     }

@@ -13,7 +13,8 @@
     "sequential": "Sequential",
     "arithmetic": "Arithmetic",
     "muxDemux": "MUX/DEMUX",
-    "codec": "Encoder/Decoder"
+    "codec": "Encoder/Decoder",
+    "memory": "Memory (RAM/ROM)"
   },
   "gates": {
     "INPUT": "Input",
@@ -46,7 +47,9 @@
     "DECODER_2_4": "2-4 Decoder",
     "DECODER_3_8": "3-8 Decoder",
     "ENCODER_4_2": "4-2 Encoder",
-    "STATE_MACHINE": "State Machine"
+    "STATE_MACHINE": "State Machine",
+    "RAM_16x4": "RAM 16×4",
+    "ROM_16x4": "ROM 16×4"
   },
   "monitor": {
     "title": "Signal Monitor",

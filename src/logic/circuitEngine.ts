@@ -292,6 +292,48 @@ export function evaluateCombinationalCircuit(
       return;
     }
 
+    if (node.type === 'RAM_16x4') {
+      const addrConns = ['addr0', 'addr1', 'addr2', 'addr3'].map((h) =>
+        connections.find((c) => c.target === nodeId && c.targetHandle === h)
+      );
+      addrConns.forEach((conn) => {
+        if (conn && !outputValues.has(conn.source)) computeNode(conn.source);
+      });
+      const addr = addrConns.reduce((acc, conn, i) => {
+        const bit = conn ? (outputValues.get(conn.source) ?? false) : false;
+        return acc + (bit ? (1 << i) : 0);
+      }, 0);
+      const memory = node.internalState?.memory ?? Array.from({ length: 16 }, () => [false, false, false, false]);
+      const row = memory[addr] ?? [false, false, false, false];
+      row.forEach((v, i) => outputValues.set(`${nodeId}_q${i}`, v));
+      computedNodes.add(nodeId);
+      return;
+    }
+
+    if (node.type === 'ROM_16x4') {
+      const addrConns = ['addr0', 'addr1', 'addr2', 'addr3'].map((h) =>
+        connections.find((c) => c.target === nodeId && c.targetHandle === h)
+      );
+      const ceConn = connections.find((c) => c.target === nodeId && c.targetHandle === 'ce');
+      addrConns.forEach((conn) => {
+        if (conn && !outputValues.has(conn.source)) computeNode(conn.source);
+      });
+      if (ceConn && !outputValues.has(ceConn.source)) computeNode(ceConn.source);
+      const ce = ceConn ? (outputValues.get(ceConn.source) ?? true) : true;
+      const addr = addrConns.reduce((acc, conn, i) => {
+        const bit = conn ? (outputValues.get(conn.source) ?? false) : false;
+        return acc + (bit ? (1 << i) : 0);
+      }, 0);
+      const memory = node.internalState?.memory ?? Array.from({ length: 16 }, (_, j) => {
+        const gray = j ^ (j >> 1);
+        return [Boolean((gray >> 0) & 1), Boolean((gray >> 1) & 1), Boolean((gray >> 2) & 1), Boolean((gray >> 3) & 1)];
+      });
+      const row = ce ? (memory[addr] ?? [false, false, false, false]) : [false, false, false, false];
+      row.forEach((v, i) => outputValues.set(`${nodeId}_q${i}`, v));
+      computedNodes.add(nodeId);
+      return;
+    }
+
     const def = gateDefinitions[node.type];
     if (def) {
       const inputs = getInputValues(nodeId);
@@ -361,6 +403,10 @@ export function getNodeInputHandles(type: NodeType): string[] {
       return ['d0', 'd1', 'd2', 'd3'];
     case 'STATE_MACHINE':
       return ['input', 'clk'];
+    case 'RAM_16x4':
+      return ['addr0', 'addr1', 'addr2', 'addr3', 'd0', 'd1', 'd2', 'd3', 'we', 'clk'];
+    case 'ROM_16x4':
+      return ['addr0', 'addr1', 'addr2', 'addr3', 'ce'];
     default:
       return ['in1', 'in2'];
   }
@@ -401,6 +447,9 @@ export function getNodeOutputHandles(type: NodeType): string[] {
       return ['y0', 'y1'];
     case 'STATE_MACHINE':
       return ['out', 'state'];
+    case 'RAM_16x4':
+    case 'ROM_16x4':
+      return ['q0', 'q1', 'q2', 'q3'];
     default:
       return ['out'];
   }

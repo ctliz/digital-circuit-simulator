@@ -13,7 +13,8 @@
     "sequential": "时序逻辑",
     "arithmetic": "算术运算",
     "muxDemux": "多路复用器",
-    "codec": "编码器/译码器"
+    "codec": "编码器/译码器",
+    "memory": "存储器 (RAM/ROM)"
   },
   "gates": {
     "INPUT": "输入",
@@ -46,7 +47,9 @@
     "DECODER_2_4": "2-4译码器",
     "DECODER_3_8": "3-8译码器",
     "ENCODER_4_2": "4-2编码器",
-    "STATE_MACHINE": "状态机"
+    "STATE_MACHINE": "状态机",
+    "RAM_16x4": "RAM 16×4",
+    "ROM_16x4": "ROM 16×4"
   },
   "monitor": {
     "title": "信号监测面板",

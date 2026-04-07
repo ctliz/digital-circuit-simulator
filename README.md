@@ -24,7 +24,9 @@ Based on **Mano's Digital Design** textbook curriculum.
 ### Multiplexers / Demultiplexers (Ch. 4)
 - **2-1 MUX**: 2 inputs, 1 select, 1 output
 - **4-1 MUX**: 4 inputs, 2 selects, 1 output
+- **8-1 MUX**: 8 inputs, 3 selects, 1 output
 - **1-2 DEMUX**: 1 input, 1 select, 2 outputs
+- **1-4 DEMUX**: 1 input, 2 selects, 4 outputs
 
 ### Encoders / Decoders (Ch. 4)
 - **2-4 Decoder**: 2 inputs, 4 outputs
@@ -43,16 +45,20 @@ Based on **Mano's Digital Design** textbook curriculum.
 - **Shift Register**: 4-bit shift register with serial input
 - **4-bit Counter**: Binary counter with reset
 - **8-bit Counter**: Binary counter with reset
-- **State Machine**: Finite state machine component
+- **State Machine**: Finite state machine (FSM) component
 - **Clock**: Oscillating signal generator (0.1-10 Hz)
 
-### Truth Table Generator
-- Automatically generates truth tables for combinational circuits
-- Supports up to 8 inputs
+### Memory (Ch. 7)
+- **RAM 16x4**: 16 locations × 4 bits, read/write support
+- **ROM 16x4**: 16 locations × 4 bits, read-only
+
+### Analysis Tools
+- **Truth Table Generator**: Automatically generates truth tables for combinational circuits
+- **K-Map Visualization**: Interactive Karnaugh map for Boolean simplification
 
 ### Simulation
 - Real-time signal propagation
-- Configurable clock frequency
+- Configurable clock frequency (0.1-10 Hz)
 - Clock cycle counter
 - Play/Pause controls
 
@@ -62,8 +68,7 @@ Based on **Mano's Digital Design** textbook curriculum.
 - MiniMap and navigation controls
 - Properties panel for node editing
 - Signal monitoring panel
-- Interactive tutorial
-- **K-Map visualization** for Boolean simplification
+- Interactive tutorial for new users
 - **Multi-language support** (English/Chinese)
 
 ---
@@ -143,16 +148,26 @@ digital-circuit-simulator/
 │   │   ├── Canvas.tsx         # Main canvas
 │   │   ├── MonitorPanel.tsx   # Signal monitor
 │   │   ├── PropertiesPanel.tsx # Property editor
-│   │   ├── Toolbar.tsx        # Toolbar
+│   │   ├── Toolbar.tsx         # Toolbar
 │   │   ├── Tutorial.tsx        # Tutorial
 │   │   ├── TruthTablePanel.tsx # Truth table generator
 │   │   └── KMapPanel.tsx      # K-map visualization
 │   ├── i18n/               # Internationalization
-│   ├── logic/              # Core logic
-│   │   ├── circuitEngine.ts    # Circuit evaluation
-│   │   └── gateDefinitions.ts   # Gate definitions
-│   ├── store/              # State management
-│   └── types/              # TypeScript types
+│   │   ├── index.tsx         # i18n context
+│   │   ├── useI18n.ts        # i18n hook
+│   │   ├── en.json           # English translations
+│   │   └── zh.json           # Chinese translations
+│   ├── logic/                # Core logic
+│   │   ├── circuitEngine.ts   # Circuit evaluation
+│   │   └── gateDefinitions.ts # Gate definitions
+│   ├── store/                # State management (Zustand)
+│   │   └── circuitStore.ts   # Circuit store
+│   └── types/                # TypeScript types
+│       └── circuit.ts        # Circuit type definitions
+├── public/                  # Static assets
+├── index.html               # HTML entry
+├── package.json
+└── vite.config.ts
 ```
 
 ---
@@ -163,11 +178,22 @@ This project follows the curriculum of **Mano's Digital Design**:
 
 | Chapter | Topic | Status |
 |---------|-------|--------|
-| Ch 2 | Boolean Algebra & Logic Gates | ✅ |
-| Ch 3 | Combinational Logic | ✅ |
-| Ch 4 | Combinational Functions | ✅ |
-| Ch 5 | Sequential Logic | Partial |
-| Ch 6 | Registers & Counters | Planned |
+| Ch 2 | Boolean Algebra & Logic Gates | ✅ Complete |
+| Ch 3 | Combinational Logic | ✅ Complete |
+| Ch 4 | Combinational Functions | ✅ Complete |
+| Ch 5 | Sequential Logic | ✅ Complete |
+| Ch 6 | Registers & Counters | ✅ Complete |
+| Ch 7 | Memory | ✅ Complete |
+
+---
+
+## Roadmap
+
+Future enhancements planned:
+- [ ] Timing diagram visualization
+- [ ] Circuit save/load functionality
+- [ ] Example circuit library
+- [ ] Waveform viewer
 
 ---
 
