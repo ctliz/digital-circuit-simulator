@@ -1,0 +1,75 @@
+{
+  "toolbar": {
+    "title": "Digital Circuit Simulator",
+    "components": "Components",
+    "simulation": "Simulation Control",
+    "run": "Run",
+    "pause": "Pause",
+    "reset": "Reset",
+    "nodeList": "Node List"
+  },
+  "gates": {
+    "INPUT": "Input",
+    "OUTPUT": "Output",
+    "AND": "AND Gate",
+    "OR": "OR Gate",
+    "NOT": "NOT Gate",
+    "NAND": "NAND Gate",
+    "NOR": "NOR Gate",
+    "XOR": "XOR Gate",
+    "XNOR": "XNOR Gate",
+    "FLIPFLOP_D": "D Flip-Flop",
+    "CLOCK": "Clock",
+    "REGISTER": "Register"
+  },
+  "monitor": {
+    "title": "Signal Monitor",
+    "hint": "Click \"Run\" to start simulation",
+    "high": "High",
+    "low": "Low"
+  },
+  "properties": {
+    "title": "Properties",
+    "noSelection": "Select a node to view properties",
+    "type": "Type",
+    "id": "ID",
+    "currentValue": "Current Value",
+    "frequency": "Frequency (Hz)",
+    "label": "Label",
+    "highLevel": "High",
+    "lowLevel": "Low"
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "Welcome to Digital Circuit Simulator",
+      "content": "An interactive logic gate simulator for learning digital circuits through hands-on practice."
+    },
+    "addComponent": {
+      "title": "Add Components",
+      "content": "Click component buttons in the left toolbar (such as \"AND\", \"Input\", \"Output\") to add nodes to the canvas."
+    },
+    "connect": {
+      "title": "Connect Wires",
+      "content": "Drag from the output handle on the right side of a node to the input handle on the left side of another node to create connections."
+    },
+    "toggle": {
+      "title": "Toggle Signal",
+      "content": "Click \"Input\" nodes to toggle between 0 and 1. High level nodes are highlighted."
+    },
+    "simulate": {
+      "title": "Run Simulation",
+      "content": "Click \"Run\" to start simulation and observe how signals propagate through the circuit. Click \"Reset\" to clear the canvas."
+    },
+    "start": {
+      "title": "Start Learning",
+      "content": "Try building a simple AND circuit: add 2 inputs, 1 AND gate, 1 output, connect them, and run the simulation!"
+    },
+    "step": "Step {current}/{total}",
+    "prev": "Previous",
+    "next": "Next",
+    "startUsing": "Start Using",
+    "clickToAdd": "Click button to add node",
+    "dragToConnect": "Drag to create connection",
+    "startSimulation": "Start simulation"
+  }
+}

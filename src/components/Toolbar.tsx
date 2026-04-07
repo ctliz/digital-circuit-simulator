@@ -1,0 +1,108 @@
+import type { NodeType } from '../types/circuit';
+import { useCircuitStore } from '../store/circuitStore';
+import { useI18n } from '../i18n';
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Trash2,
+  ToggleLeft,
+  ToggleRight,
+  Square,
+  ChevronRight,
+  CircleDot,
+  Clock,
+  HardDrive,
+} from 'lucide-react';
+
+const toolButtons: { type: NodeType; icon: React.ReactNode; labelKey: string }[] = [
+  { type: 'INPUT', icon: <ToggleLeft size={18} />, labelKey: 'gates.INPUT' },
+  { type: 'OUTPUT', icon: <ToggleRight size={18} />, labelKey: 'gates.OUTPUT' },
+  { type: 'AND', icon: <Square size={18} />, labelKey: 'gates.AND' },
+  { type: 'OR', icon: <ChevronRight size={18} />, labelKey: 'gates.OR' },
+  { type: 'NOT', icon: <CircleDot size={18} />, labelKey: 'gates.NOT' },
+  { type: 'NAND', icon: <Square size={18} />, labelKey: 'gates.NAND' },
+  { type: 'NOR', icon: <ChevronRight size={18} />, labelKey: 'gates.NOR' },
+  { type: 'XOR', icon: <ChevronRight size={18} />, labelKey: 'gates.XOR' },
+  { type: 'XNOR', icon: <ChevronRight size={18} />, labelKey: 'gates.XNOR' },
+  { type: 'FLIPFLOP_D', icon: <HardDrive size={18} />, labelKey: 'gates.FLIPFLOP_D' },
+  { type: 'CLOCK', icon: <Clock size={18} />, labelKey: 'gates.CLOCK' },
+  { type: 'REGISTER', icon: <HardDrive size={18} />, labelKey: 'gates.REGISTER' },
+];
+
+export function Toolbar() {
+  const { addNode, isRunning, setIsRunning, clear, nodes, removeNode } =
+    useCircuitStore();
+  const { t } = useI18n();
+
+  const handleDragStart = (
+    e: React.DragEvent,
+    type: NodeType
+  ) => {
+    e.dataTransfer.setData('application/reactflow', type);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  return (
+    <div className="toolbar">
+      <div className="toolbar-section">
+        <h3>{t('toolbar.title')}</h3>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.components')}</div>
+        <div className="toolbar-buttons">
+          {toolButtons.map(({ type, icon, labelKey }) => (
+            <button
+              key={type}
+              className="toolbar-btn"
+              draggable
+              onDragStart={(e) => handleDragStart(e, type)}
+              onClick={() => addNode(type, { x: 250, y: 200 })}
+              title={t(labelKey)}
+            >
+              {icon}
+              <span>{t(labelKey)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.simulation')}</div>
+        <div className="toolbar-buttons">
+          <button
+            className={`toolbar-btn ${isRunning ? 'active' : ''}`}
+            onClick={() => setIsRunning(!isRunning)}
+          >
+            {isRunning ? <Pause size={18} /> : <Play size={18} />}
+            <span>{isRunning ? t('toolbar.pause') : t('toolbar.run')}</span>
+          </button>
+          <button className="toolbar-btn" onClick={clear}>
+            <RotateCcw size={18} />
+            <span>{t('toolbar.reset')}</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="toolbar-section">
+        <div className="toolbar-label">{t('toolbar.nodeList')} ({nodes.length})</div>
+        <div className="node-list">
+          {nodes.map((node) => (
+            <div key={node.id} className="node-list-item">
+              <span>
+                {t(`gates.${node.type}`)}
+              </span>
+              <button
+                className="node-delete-btn"
+                onClick={() => removeNode(node.id)}
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

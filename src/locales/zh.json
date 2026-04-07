@@ -1,0 +1,75 @@
+{
+  "toolbar": {
+    "title": "数字电路模拟器",
+    "components": "组件",
+    "simulation": "仿真控制",
+    "run": "运行",
+    "pause": "暂停",
+    "reset": "重置",
+    "nodeList": "节点列表"
+  },
+  "gates": {
+    "INPUT": "输入",
+    "OUTPUT": "输出",
+    "AND": "与门",
+    "OR": "或门",
+    "NOT": "非门",
+    "NAND": "与非门",
+    "NOR": "或非门",
+    "XOR": "异或门",
+    "XNOR": "同或门",
+    "FLIPFLOP_D": "D触发器",
+    "CLOCK": "时钟",
+    "REGISTER": "寄存器"
+  },
+  "monitor": {
+    "title": "信号监测面板",
+    "hint": "点击「运行」开始仿真",
+    "high": "高电平",
+    "low": "低电平"
+  },
+  "properties": {
+    "title": "属性面板",
+    "noSelection": "选择一个节点查看属性",
+    "type": "类型",
+    "id": "ID",
+    "currentValue": "当前值",
+    "frequency": "频率 (Hz)",
+    "label": "标签",
+    "highLevel": "高电平",
+    "lowLevel": "低电平"
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "欢迎使用数字电路模拟器",
+      "content": "这是一个交互式的逻辑门在线模拟器，通过动手实践来学习数字电路。"
+    },
+    "addComponent": {
+      "title": "添加组件",
+      "content": "点击左侧工具栏的组件按钮（如「与门」「输入」「输出」），即可在画布上添加节点。"
+    },
+    "connect": {
+      "title": "连接线路",
+      "content": "从一个节点的右侧输出点拖拽到另一个节点的左侧输入点，即可连接线路。"
+    },
+    "toggle": {
+      "title": "切换电平",
+      "content": "点击「输入」节点可以切换电平（0/1）。高电平时节点会高亮显示。"
+    },
+    "simulate": {
+      "title": "运行仿真",
+      "content": "点击「运行」按钮开始仿真，观察信号如何在电路中传播。点击「重置」可清空画布。"
+    },
+    "start": {
+      "title": "开始学习",
+      "content": "试试搭建一个简单的 AND 电路：添加 2 个输入、1 个与门、1 个输出，连接后运行仿真！"
+    },
+    "step": "步骤 {current}/{total}",
+    "prev": "上一步",
+    "next": "下一步",
+    "startUsing": "开始使用",
+    "clickToAdd": "点击按钮添加节点",
+    "dragToConnect": "拖拽创建连接",
+    "startSimulation": "开始仿真"
+  }
+}
